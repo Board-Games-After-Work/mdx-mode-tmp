@@ -31,7 +31,7 @@ export default (props: { children: ReactElement; title?: string }) => {
     const pageRoutes = [
         { name: "前言", href: "/" },
         { name: "Vol.0", href: "/" },
-        { name: "Vol.1: 艾尔萨托的陨落", href: "/" },
+        { name: "Vol.1: 艾尔萨托的陨落", href: "/vol1" },
         { name: "Vol.2: 伊托利亚的远航", href: "/" },
         { name: "Vol.2.22: 与暴风雪同行", href: "/" },
         { name: "Vol.3: 默索里哀的崛起", href: "/" },
@@ -76,7 +76,7 @@ export default (props: { children: ReactElement; title?: string }) => {
                                 {props.title ?? ""}
                             </Typography>
                             {pageRoutes.map((i) => (
-                                <Link href={i.href}>
+                                <Link href={i.href} key={i.name}>
                                     <Button sx={{ marginX: 1 }}>
                                         {i.name}
                                     </Button>

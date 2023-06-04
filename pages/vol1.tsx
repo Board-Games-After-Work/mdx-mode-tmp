@@ -1,8 +1,8 @@
 import Page from "@comps/Page";
-import Preface from "@articles/Preface.mdx";
+import Vol1 from "@articles/Vol1.mdx";
 
 export default () => (
     <Page title="前言">
-        <Preface />
+        <Vol1 />
     </Page>
 );

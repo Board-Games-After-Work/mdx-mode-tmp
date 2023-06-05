@@ -4,6 +4,7 @@ import CP from "@comps/CPass";
 import C from "@comps/Check";
 import DP from "@comps/DPass";
 import D from "@comps/Decision";
+import CQ from "@comps/ChestQueue";
 
 # Vol.1: 艾尔萨托的陨落
 
@@ -107,6 +108,7 @@ import D from "@comps/Decision";
             【获得状态：持续两小时的恍惚】"></CP>
         </C>
     </CP>
+
 </C>
 
 在超越了数次曾经漫长的庞加莱回归之后, 你们被黏黏糊糊的搅在一起冲了出来.
@@ -158,12 +160,15 @@ import D from "@comps/Decision";
 -   酒馆里除了你们大致有三桌人, 不知是酒保还是老板在吧台上擦着玻璃杯子
 
 <C title="陌生又熟悉" type="察觉">
-    <CP dc={17} cause="这个酒馆的装修, 布置都和你们的认知相距甚远.
+    <CP
+        dc={17}
+        cause="这个酒馆的装修, 布置都和你们的认知相距甚远.
     这个房间密闭的不行, 空气是靠一些奇特的栅格口送风;
     墙面上尽管有涂鸦, 但是那奇特的白色材质不同于你们之前见过的任何墙面;
     木头呢? 那些构成你从前一切安全干和习惯的木头呢;
     以及那些玻璃杯, 再高傲的国王也无法拥有这样透明无暇的玻璃杯;
-    在所有这些簇拥下你的潜意识确一口咬定这里是一个酒馆?" />
+    在所有这些簇拥下你的潜意识确一口咬定这里是一个酒馆?"
+    />
     <CP
         dc={0}
         cause="你已经不能再胁持那些失去控制的神经冲动为你做更多的事了."
@@ -174,3 +179,5 @@ import D from "@comps/Decision";
 
 -   这是一对矮人, 似乎是夫妻
 -   本来只是在聊一些没啥的事情, 但是喝多了以后慢慢开始有了一些抱怨
+
+<CQ queueLabel="水电公司区域主奖励队列" />

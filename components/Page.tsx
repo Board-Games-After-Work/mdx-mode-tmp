@@ -10,17 +10,28 @@ import {
 } from "@mui/material";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import { ReactElement } from "react";
+import { ReactElement, use, useEffect, useState } from "react";
 import Link from "next/link";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
+import { nowAdventureA } from "@/store";
 
-import { colorModeA } from "@/store";
+export const colorModeA = atomWithStorage(
+    "darkMode",
+    "dark" as "dark" | "light"
+);
 
 export default (props: { children: ReactElement; title?: string }) => {
-    const [colorMode, setColorMode] = useAtom(colorModeA) as [
-        "dark" | "light",
-        (v: "dark" | "light") => void
-    ];
+    const setNowAdventure = useSetAtom(nowAdventureA);
+    const [isFirstRender, setIsFirstRender] = useState(true);
+
+    useEffect(() => {
+        if (isFirstRender) {
+            setNowAdventure();
+        }
+    });
+
+    const [colorMode, setColorMode] = useAtom(colorModeA);
 
     const Theme = createTheme({
         palette: {
@@ -29,7 +40,7 @@ export default (props: { children: ReactElement; title?: string }) => {
     });
 
     const pageRoutes = [
-        { name: "前言", href: "/" },
+        { name: "主页", href: "/" },
         { name: "Vol.0", href: "/" },
         { name: "Vol.1: 艾尔萨托的陨落", href: "/vol1" },
         { name: "Vol.2: 伊托利亚的远航", href: "/" },
@@ -37,6 +48,7 @@ export default (props: { children: ReactElement; title?: string }) => {
         { name: "Vol.3: 默索里哀的崛起", href: "/" },
     ];
 
+    useEffect(() => setIsFirstRender(false));
     return (
         <ThemeProvider theme={Theme}>
             <CssBaseline />
@@ -75,8 +87,8 @@ export default (props: { children: ReactElement; title?: string }) => {
                             >
                                 {props.title ?? ""}
                             </Typography>
-                            {pageRoutes.map((i) => (
-                                <Link href={i.href} key={i.name}>
+                            {pageRoutes.map((i, index) => (
+                                <Link href={i.href} key={index}>
                                     <Button sx={{ marginX: 1 }}>
                                         {i.name}
                                     </Button>

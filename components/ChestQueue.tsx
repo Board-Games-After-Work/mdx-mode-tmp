@@ -1,4 +1,7 @@
 import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
     Button,
     Card,
     CardActionArea,
@@ -7,42 +10,57 @@ import {
     MobileStepper,
     Typography,
     useTheme,
+    Box,
+    Chip,
 } from "@mui/material";
 import DiamondIcon from "@mui/icons-material/Diamond";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
+import AddLocationIcon from "@mui/icons-material/AddLocation";
 import { useState } from "react";
 import _ from "lodash";
+import { nowAdventureA } from "@/store";
+import { useAtom } from "jotai";
+import ItemSpan from "./Item";
 
-const ssteps = [
-    {
-        label: "Select campaign settings",
-        check: false,
-        description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`,
-    },
-    {
-        label: "Create an ad group",
-        check: false,
-        description:
-            "An ad group contains one or more ads which target a shared set of keywords.",
-    },
-    {
-        label: "Create an ad",
-        check: false,
-        description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
-    },
-];
+export default (props: {
+    queueLabel: string;
+    from?: string;
+    suggestion: number;
+}) => {
+    const [nowAdventure, setNowAdventure] = useAtom(nowAdventureA);
 
-export default (props: { queueLabel: string; activeStep?: number }) => {
-    const [steps, setSteps] = useState(ssteps);
+    const [steps, setSteps] = [
+        nowAdventure?.itemsQueuesVec[props.queueLabel]?.items ?? [],
+        (val: Item[]) => {
+            let tmp = _.cloneDeep(nowAdventure);
+            if (tmp !== null) {
+                tmp.itemsQueuesVec[props.queueLabel].items = val;
+            }
+
+            setNowAdventure(tmp);
+        },
+    ];
+
     const theme = useTheme();
-    const [activeStep, setActiveStep] = useState(props.activeStep ?? 0);
+    const [activeStep, setActiveStep] = [
+        nowAdventure?.itemsQueuesVec?.activeStep ?? 0,
+        (val: number | ((val: number) => number)) => {
+            let tmp = _.cloneDeep(nowAdventure);
+            if (tmp !== null) {
+                tmp.itemsQueuesVec["activeStep"] =
+                    typeof val === "number"
+                        ? val
+                        : val(nowAdventure?.itemsQueuesVec?.activeStep ?? 0);
+            }
+
+            setNowAdventure(tmp);
+        },
+    ];
+
     const maxSteps = steps.length;
 
     const handleNext = () => {
@@ -54,8 +72,6 @@ export default (props: { queueLabel: string; activeStep?: number }) => {
     };
 
     const handleCheck = () => {
-        console.log("a");
-
         let steps_c = _.cloneDeep(steps);
 
         steps_c[activeStep].check = !steps[activeStep].check;
@@ -63,114 +79,179 @@ export default (props: { queueLabel: string; activeStep?: number }) => {
         setSteps(steps_c);
     };
 
-    console.log(steps[activeStep].check);
-
     return (
-        <Card sx={{ minWidth: 275, margin: 1 }}>
-            <CardContent>
-                <Typography
-                    sx={{
-                        fontSize: 15,
-                        display: "flex",
-                        alignItems: "center",
-                    }}
-                    color="text.secondary"
-                    gutterBottom
-                >
-                    <DiamondIcon
-                        fontSize="small"
-                        sx={{ marginRight: 0.2, marginTop: -0.1 }}
-                    />{" "}
-                    奖励队列
-                </Typography>
-                <Typography variant="h5" component="div">
-                    {props.queueLabel}
-                </Typography>
+        <>
+            <Card sx={{ minWidth: 275, margin: 1 }}>
+                <CardContent>
+                    <Typography
+                        sx={{
+                            fontSize: 15,
+                            display: "flex",
+                            alignItems: "center",
+                        }}
+                        color="text.secondary"
+                        gutterBottom
+                    >
+                        <DiamondIcon
+                            fontSize="small"
+                            sx={{ marginRight: 0.2, marginTop: -0.1 }}
+                        />{" "}
+                        奖励队列
+                    </Typography>
 
-                <Card
-                    square
-                    elevation={0}
-                    sx={{
-                        marginY: 2,
-                        borderRadius: 1,
-                    }}
-                >
-                    <CardActionArea onClick={handleCheck}>
-                        <CardContent>
-                            <Typography variant="h6">
-                                {steps[activeStep].label}
-                            </Typography>
+                    <Typography variant="h5" component="div">
+                        {props.queueLabel}
+                    </Typography>
 
-                            <Typography marginTop={2}>
-                                {steps[activeStep].description}
-                            </Typography>
-                        </CardContent>
-                        <CardContent sx={{ height: 60 }}>
-                            <Typography
-                                color={
-                                    steps[activeStep].check
-                                        ? theme.palette.success.main
-                                        : theme.palette.warning.main
-                                }
-                                marginLeft={1}
+                    {props.from ? (
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                            位于 {props.from}, 建议进度为
+                            <Chip
+                                component="span"
+                                label={`${props.suggestion} / ${maxSteps}`}
+                                size="small"
+                            />
+                        </Typography>
+                    ) : (
+                        <></>
+                    )}
+
+                    <Card
+                        square
+                        elevation={0}
+                        sx={{
+                            marginY: 2,
+                            borderRadius: 1,
+                        }}
+                    >
+                        <CardActionArea onClick={handleCheck}>
+                            <CardContent>
+                                <ItemSpan val={steps[activeStep]} />
+                            </CardContent>
+                            <CardContent sx={{ height: 60, display: "flex" }}>
+                                <Typography
+                                    color={
+                                        steps[activeStep]?.check
+                                            ? theme.palette.success.main
+                                            : theme.palette.warning.main
+                                    }
+                                    marginLeft={1}
+                                >
+                                    {steps[activeStep]?.check ? (
+                                        <FormControlLabel
+                                            sx={{ width: 100 }}
+                                            control={<CheckBoxIcon />}
+                                            label="已获取"
+                                        />
+                                    ) : (
+                                        <FormControlLabel
+                                            sx={{ width: 100 }}
+                                            control={<AddBoxIcon />}
+                                            label="未获取"
+                                        />
+                                    )}
+                                </Typography>
+
+                                <Box width="100%" />
+
+                                <Typography
+                                    color={
+                                        props.suggestion - 1 === activeStep
+                                            ? theme.palette.primary.main
+                                            : theme.palette.warning.main
+                                    }
+                                >
+                                    <FormControlLabel
+                                        sx={{
+                                            width: 100,
+                                            marginRight: 1,
+                                        }}
+                                        control={<AddLocationIcon />}
+                                        label={
+                                            props.suggestion - 1 > activeStep
+                                                ? "落后"
+                                                : props.suggestion - 1 <
+                                                  activeStep
+                                                ? "超前"
+                                                : "建议"
+                                        }
+                                        labelPlacement="start"
+                                    />
+                                </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
+
+                    <MobileStepper
+                        sx={{
+                            borderRadius: 1,
+                            marginBottom: 2,
+                        }}
+                        variant="text"
+                        steps={maxSteps}
+                        position="static"
+                        activeStep={activeStep}
+                        nextButton={
+                            <Button
+                                size="small"
+                                onClick={handleNext}
+                                disabled={activeStep === maxSteps - 1}
                             >
-                                {steps[activeStep].check ? (
-                                    <FormControlLabel
-                                        value="end"
-                                        control={<CheckBoxIcon />}
-                                        label="已获取"
-                                        labelPlacement="end"
-                                    />
+                                Next
+                                {theme.direction === "rtl" ? (
+                                    <KeyboardArrowLeft />
                                 ) : (
-                                    <FormControlLabel
-                                        value="end"
-                                        control={<AddBoxIcon />}
-                                        label="未获取"
-                                        labelPlacement="end"
-                                    />
+                                    <KeyboardArrowRight />
                                 )}
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
-                <MobileStepper
-                    sx={{
-                        borderRadius: 1,
-                    }}
-                    variant="text"
-                    steps={maxSteps}
-                    position="static"
-                    activeStep={activeStep}
-                    nextButton={
-                        <Button
-                            size="small"
-                            onClick={handleNext}
-                            disabled={activeStep === maxSteps - 1}
-                        >
-                            Next
-                            {theme.direction === "rtl" ? (
-                                <KeyboardArrowLeft />
-                            ) : (
-                                <KeyboardArrowRight />
-                            )}
-                        </Button>
-                    }
-                    backButton={
-                        <Button
-                            size="small"
-                            onClick={handleBack}
-                            disabled={activeStep === 0}
-                        >
-                            {theme.direction === "rtl" ? (
-                                <KeyboardArrowRight />
-                            ) : (
-                                <KeyboardArrowLeft />
-                            )}
-                            Back
-                        </Button>
-                    }
-                />
-            </CardContent>
-        </Card>
+                            </Button>
+                        }
+                        backButton={
+                            <Button
+                                size="small"
+                                onClick={handleBack}
+                                disabled={activeStep === 0}
+                            >
+                                {theme.direction === "rtl" ? (
+                                    <KeyboardArrowRight />
+                                ) : (
+                                    <KeyboardArrowLeft />
+                                )}
+                                Back
+                            </Button>
+                        }
+                    />
+
+                    <Accordion sx={{ boxShadow: "none" }}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <FormControlLabel
+                                value="end"
+                                control={<WorkspacesIcon />}
+                                label="甜点列表"
+                                labelPlacement="end"
+                            />
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            {(
+                                nowAdventure?.itemsQueuesVec[props.queueLabel]
+                                    ?.desserts ?? []
+                            ).map((d) => (
+                                <Card
+                                    square
+                                    elevation={0}
+                                    sx={{
+                                        marginY: 2,
+                                        borderRadius: 1,
+                                    }}
+                                >
+                                    <CardContent>
+                                        <ItemSpan val={d} />
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </AccordionDetails>
+                    </Accordion>
+                </CardContent>
+            </Card>
+        </>
     );
 };

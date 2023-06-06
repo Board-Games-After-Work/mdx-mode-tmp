@@ -1,5 +1,5 @@
 [["M酒馆"]]
-item = { name = "沙棘利口酒", introduce = "入口酸的不行, 很强的单宁感", tags = [["酒水"]] }
+item = { name = "沙棘利口酒0", introduce = "入口酸的不行, 很强的单宁感", tags = [["酒水"], ["剩余使用次数", "2"]] }
 inventory = 10
 price = 1
 per = "食品券 (限购一瓶/人*日)"

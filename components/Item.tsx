@@ -4,7 +4,7 @@ export default (props: { val: Item | null | undefined }) => {
     return (
         <>
             <Typography variant="h6">
-                {props.val?.name ?? "未找到相关物品"}
+                {props.val?.name ?? "未选择物品"}
             </Typography>
 
             {props.val !== null ? (
@@ -64,7 +64,7 @@ export default (props: { val: Item | null | undefined }) => {
             )}
 
             <Typography marginTop={2} whiteSpace="pre">
-                <code>{props.val?.introduce ?? "无介绍"}</code>
+                <code>{props.val?.introduce ?? ""}</code>
             </Typography>
         </>
     );

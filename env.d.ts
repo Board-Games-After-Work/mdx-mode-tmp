@@ -12,7 +12,7 @@ interface Goods {
     price: number;
     inventory?: number;
     per?: "string";
-}[]
+}
 
 interface Adventure {
     name: string;
@@ -21,5 +21,5 @@ interface Adventure {
         [key: string]: { items: Item[]; desserts: Item[] };
         activeStep?: number;
     };
-    shops: { [key: string]: Goods };
+    shops: { [key: string]: Goods[] };
 }

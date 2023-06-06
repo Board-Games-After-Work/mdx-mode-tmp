@@ -13,6 +13,7 @@ import {
     Box,
     Chip,
 } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import DiamondIcon from "@mui/icons-material/Diamond";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
@@ -20,28 +21,27 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
-import { useState } from "react";
 import _ from "lodash";
 import { nowAdventureA } from "@/store";
 import { useAtom } from "jotai";
 import ItemSpan from "./Item";
 
 export default (props: {
-    queueLabel: string;
+    label: string;
     from?: string;
     suggestion: number;
 }) => {
     const [nowAdventure, setNowAdventure] = useAtom(nowAdventureA);
 
     const [steps, setSteps] = [
-        nowAdventure?.itemsQueuesVec[props.queueLabel]?.items ?? [],
+        nowAdventure?.itemsQueuesVec[props.label]?.items ?? [],
         (val: Item[]) => {
             let tmp = _.cloneDeep(nowAdventure);
             if (tmp !== null) {
-                tmp.itemsQueuesVec[props.queueLabel].items = val;
+                tmp.itemsQueuesVec[props.label].items = val;
             }
 
-            setNowAdventure(tmp);
+            setNowAdventure(tmp ?? undefined);
         },
     ];
 
@@ -57,7 +57,7 @@ export default (props: {
                         : val(nowAdventure?.itemsQueuesVec?.activeStep ?? 0);
             }
 
-            setNowAdventure(tmp);
+            setNowAdventure(tmp ?? undefined);
         },
     ];
 
@@ -80,178 +80,201 @@ export default (props: {
     };
 
     return (
-        <>
-            <Card sx={{ minWidth: 275, margin: 1 }}>
-                <CardContent>
-                    <Typography
+        <Card sx={{ minWidth: 275, margin: 1 }}>
+            <CardContent>
+                <Typography
+                    sx={{
+                        fontSize: 15,
+                        display: "flex",
+                        alignItems: "center",
+                    }}
+                    color="text.secondary"
+                    gutterBottom
+                >
+                    <DiamondIcon
+                        fontSize="small"
+                        sx={{ marginRight: 0.2, marginTop: -0.1 }}
+                    />{" "}
+                    奖励队列
+                </Typography>
+
+                <Typography variant="h5" component="div">
+                    {props.label}
+                </Typography>
+
+                {nowAdventure?.itemsQueuesVec[props.label] ? (
+                    <>
+                        {props.from ? (
+                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                位于 {props.from}, 建议进度为
+                                <Chip
+                                    component="span"
+                                    label={`${props.suggestion} / ${maxSteps}`}
+                                    size="small"
+                                />
+                            </Typography>
+                        ) : (
+                            <></>
+                        )}
+
+                        <Card
+                            square
+                            elevation={0}
+                            sx={{
+                                marginY: 2,
+                                borderRadius: 1,
+                            }}
+                        >
+                            <CardActionArea onClick={handleCheck}>
+                                <CardContent>
+                                    <ItemSpan val={steps[activeStep]} />
+                                </CardContent>
+                                <CardContent
+                                    sx={{ height: 60, display: "flex" }}
+                                >
+                                    <Typography
+                                        color={
+                                            steps[activeStep]?.check
+                                                ? theme.palette.success.main
+                                                : theme.palette.warning.main
+                                        }
+                                        marginLeft={1}
+                                    >
+                                        {steps[activeStep]?.check ? (
+                                            <FormControlLabel
+                                                sx={{ width: 100 }}
+                                                control={<CheckBoxIcon />}
+                                                label="已获取"
+                                            />
+                                        ) : (
+                                            <FormControlLabel
+                                                sx={{ width: 100 }}
+                                                control={<AddBoxIcon />}
+                                                label="未获取"
+                                            />
+                                        )}
+                                    </Typography>
+
+                                    <Box width="100%" />
+
+                                    <Typography
+                                        color={
+                                            props.suggestion - 1 === activeStep
+                                                ? theme.palette.primary.main
+                                                : theme.palette.warning.main
+                                        }
+                                    >
+                                        <FormControlLabel
+                                            sx={{
+                                                width: 100,
+                                                marginRight: 1,
+                                            }}
+                                            control={<AddLocationIcon />}
+                                            label={
+                                                props.suggestion - 1 >
+                                                activeStep
+                                                    ? "落后"
+                                                    : props.suggestion - 1 <
+                                                      activeStep
+                                                    ? "超前"
+                                                    : "建议"
+                                            }
+                                            labelPlacement="start"
+                                        />
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+
+                        <MobileStepper
+                            sx={{
+                                borderRadius: 1,
+                                marginBottom: 2,
+                            }}
+                            variant="text"
+                            steps={maxSteps}
+                            position="static"
+                            activeStep={activeStep}
+                            nextButton={
+                                <Button
+                                    size="small"
+                                    onClick={handleNext}
+                                    disabled={activeStep === maxSteps - 1}
+                                >
+                                    Next
+                                    {theme.direction === "rtl" ? (
+                                        <KeyboardArrowLeft />
+                                    ) : (
+                                        <KeyboardArrowRight />
+                                    )}
+                                </Button>
+                            }
+                            backButton={
+                                <Button
+                                    size="small"
+                                    onClick={handleBack}
+                                    disabled={activeStep === 0}
+                                >
+                                    {theme.direction === "rtl" ? (
+                                        <KeyboardArrowRight />
+                                    ) : (
+                                        <KeyboardArrowLeft />
+                                    )}
+                                    Back
+                                </Button>
+                            }
+                        />
+
+                        <Accordion sx={{ boxShadow: "none" }}>
+                            <AccordionSummary
+                                expandIcon={
+                                    <ExpandMoreIcon
+                                        fontSize="small"
+                                        sx={{ marginTop: -0.1 }}
+                                    />
+                                }
+                            >
+                                <FormControlLabel
+                                    value="end"
+                                    control={<WorkspacesIcon />}
+                                    label="甜点列表"
+                                    labelPlacement="end"
+                                />
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                {(
+                                    nowAdventure?.itemsQueuesVec[props.label]
+                                        ?.desserts ?? []
+                                ).map((d) => (
+                                    <Card
+                                        square
+                                        elevation={0}
+                                        sx={{
+                                            marginY: 2,
+                                            borderRadius: 1,
+                                        }}
+                                        key={d.name}
+                                    >
+                                        <CardContent>
+                                            <ItemSpan val={d} />
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </AccordionDetails>
+                        </Accordion>
+                    </>
+                ) : (
+                    <Box
                         sx={{
-                            fontSize: 15,
                             display: "flex",
                             alignItems: "center",
-                        }}
-                        color="text.secondary"
-                        gutterBottom
-                    >
-                        <DiamondIcon
-                            fontSize="small"
-                            sx={{ marginRight: 0.2, marginTop: -0.1 }}
-                        />{" "}
-                        奖励队列
-                    </Typography>
-
-                    <Typography variant="h5" component="div">
-                        {props.queueLabel}
-                    </Typography>
-
-                    {props.from ? (
-                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                            位于 {props.from}, 建议进度为
-                            <Chip
-                                component="span"
-                                label={`${props.suggestion} / ${maxSteps}`}
-                                size="small"
-                            />
-                        </Typography>
-                    ) : (
-                        <></>
-                    )}
-
-                    <Card
-                        square
-                        elevation={0}
-                        sx={{
-                            marginY: 2,
-                            borderRadius: 1,
+                            flexDirection: "column",
                         }}
                     >
-                        <CardActionArea onClick={handleCheck}>
-                            <CardContent>
-                                <ItemSpan val={steps[activeStep]} />
-                            </CardContent>
-                            <CardContent sx={{ height: 60, display: "flex" }}>
-                                <Typography
-                                    color={
-                                        steps[activeStep]?.check
-                                            ? theme.palette.success.main
-                                            : theme.palette.warning.main
-                                    }
-                                    marginLeft={1}
-                                >
-                                    {steps[activeStep]?.check ? (
-                                        <FormControlLabel
-                                            sx={{ width: 100 }}
-                                            control={<CheckBoxIcon />}
-                                            label="已获取"
-                                        />
-                                    ) : (
-                                        <FormControlLabel
-                                            sx={{ width: 100 }}
-                                            control={<AddBoxIcon />}
-                                            label="未获取"
-                                        />
-                                    )}
-                                </Typography>
-
-                                <Box width="100%" />
-
-                                <Typography
-                                    color={
-                                        props.suggestion - 1 === activeStep
-                                            ? theme.palette.primary.main
-                                            : theme.palette.warning.main
-                                    }
-                                >
-                                    <FormControlLabel
-                                        sx={{
-                                            width: 100,
-                                            marginRight: 1,
-                                        }}
-                                        control={<AddLocationIcon />}
-                                        label={
-                                            props.suggestion - 1 > activeStep
-                                                ? "落后"
-                                                : props.suggestion - 1 <
-                                                  activeStep
-                                                ? "超前"
-                                                : "建议"
-                                        }
-                                        labelPlacement="start"
-                                    />
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-
-                    <MobileStepper
-                        sx={{
-                            borderRadius: 1,
-                            marginBottom: 2,
-                        }}
-                        variant="text"
-                        steps={maxSteps}
-                        position="static"
-                        activeStep={activeStep}
-                        nextButton={
-                            <Button
-                                size="small"
-                                onClick={handleNext}
-                                disabled={activeStep === maxSteps - 1}
-                            >
-                                Next
-                                {theme.direction === "rtl" ? (
-                                    <KeyboardArrowLeft />
-                                ) : (
-                                    <KeyboardArrowRight />
-                                )}
-                            </Button>
-                        }
-                        backButton={
-                            <Button
-                                size="small"
-                                onClick={handleBack}
-                                disabled={activeStep === 0}
-                            >
-                                {theme.direction === "rtl" ? (
-                                    <KeyboardArrowRight />
-                                ) : (
-                                    <KeyboardArrowLeft />
-                                )}
-                                Back
-                            </Button>
-                        }
-                    />
-
-                    <Accordion sx={{ boxShadow: "none" }}>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <FormControlLabel
-                                value="end"
-                                control={<WorkspacesIcon />}
-                                label="甜点列表"
-                                labelPlacement="end"
-                            />
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            {(
-                                nowAdventure?.itemsQueuesVec[props.queueLabel]
-                                    ?.desserts ?? []
-                            ).map((d) => (
-                                <Card
-                                    square
-                                    elevation={0}
-                                    sx={{
-                                        marginY: 2,
-                                        borderRadius: 1,
-                                    }}
-                                >
-                                    <CardContent>
-                                        <ItemSpan val={d} />
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </AccordionDetails>
-                    </Accordion>
-                </CardContent>
-            </Card>
-        </>
+                        <CircularProgress />
+                    </Box>
+                )}
+            </CardContent>
+        </Card>
     );
 };

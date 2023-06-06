@@ -322,7 +322,8 @@ export default (
         if (props.onSelectChange !== undefined) {
             props.onSelectChange(selected);
         }
-    }, [props, selected]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selected]);
 
     return (
         <Box sx={{ width: "100%" }}>

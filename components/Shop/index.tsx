@@ -15,7 +15,7 @@ import { nowAdventureA } from "@/store";
 
 export interface Props {
     label: string;
-    title: string;
+    title?: string;
 }
 
 export default (props: Props) => {
@@ -68,9 +68,13 @@ export default (props: Props) => {
                     商店
                 </Typography>
 
-                <Typography variant="h5" component="div">
-                    {props.title ?? "商品贩售"}
-                </Typography>
+                {props.title ? (
+                    <Typography variant="h5" component="div">
+                        {props.title}
+                    </Typography>
+                ) : (
+                    <></>
+                )}
 
                 {nowAdventure?.shops[props.label] ? (
                     <>

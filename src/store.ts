@@ -12,6 +12,7 @@ export const nowAdventureA = atom(
                 players: [],
                 itemsQueuesVec: {},
                 shops: {},
+                missions: {}
             } as Adventure;
 
             adventureTmp.itemsQueuesVec = toml.parse(

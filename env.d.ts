@@ -14,6 +14,12 @@ interface Goods {
     per?: "string";
 }
 
+interface MissionsCheckPoint {
+    name: string;
+    check?: boolean;
+    introduce?: string;
+}
+
 interface Adventure {
     name: string;
     players: Item[];
@@ -22,4 +28,10 @@ interface Adventure {
         activeStep?: number;
     };
     shops: { [key: string]: Goods[] };
+    missions: {
+        [key: string]: {
+            introduce?: string;
+            checkPoints: MissionsCheckPoint[];
+        };
+    };
 }

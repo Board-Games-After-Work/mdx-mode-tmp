@@ -12,6 +12,8 @@ import Decision from "@comps/Decision";
 import ChestQueue from "@comps/ChestQueue";
 import Shop from "@comps/Shop";
 import CustomerDOMElement from "@comps/CustomerDOMElement";
+import Fork from "@comps/Fork";
+import ForkBack from "@comps/ForkBack";
 
 const components = {
     A: Alert,
@@ -22,6 +24,8 @@ const components = {
     D: Decision,
     CQ: ChestQueue,
     S: Shop,
+    F: Fork,
+    FB: ForkBack,
     ...CustomerDOMElement,
 } as any;
 

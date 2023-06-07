@@ -1,4 +1,4 @@
-import { Box, IconButton, Link } from "@mui/material";
+import { Box, Divider, IconButton, Link } from "@mui/material";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { ReactElement } from "react";
 
@@ -78,7 +78,14 @@ const H6 = (props: { children: ReactElement }) => {
     );
 };
 
-const A = (props: any) => <Link {...props} underline="hover"></Link>;
+const A = (props: any) => (
+    <Link {...props} underline="hover">
+        <AttachFileIcon fontSize="inherit" />
+        {props.children}
+    </Link>
+);
+
+const HR = (props: any) => <Divider {...props} />;
 
 export default {
     h1: H1,
@@ -87,5 +94,6 @@ export default {
     h4: H4,
     h5: H5,
     h6: H6,
+    hr: HR,
     a: A,
 };

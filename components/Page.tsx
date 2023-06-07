@@ -1,5 +1,4 @@
-import { ThemeProvider, createStyles, createTheme } from "@mui/material/styles";
-import { StylesProvider, makeStyles } from "@mui/styles";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
     Box,
@@ -12,7 +11,7 @@ import {
 } from "@mui/material";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import { ReactElement, use, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import Link from "next/link";
 import { useAtom, useSetAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
@@ -70,7 +69,7 @@ export default (props: { children: ReactElement; title?: string }) => {
             <GlobalStyles
                 styles={{
                     "*::selection": selection,
-                    "* ::-moz-selection": selection,
+                    "*::-moz-selection": selection,
                 }}
             />
 

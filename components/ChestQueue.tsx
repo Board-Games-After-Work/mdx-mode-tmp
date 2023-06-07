@@ -33,9 +33,11 @@ export default (props: {
     suggestion: number;
 }) => {
     const [nowAdventure, setNowAdventure] = useAtom(nowAdventureA);
+    const thisItemsQueue = nowAdventure?.itemsQueuesVec[props.label] ?? null;
+    useUpdateWhenLoading(thisItemsQueue);
 
     const [steps, setSteps] = [
-        nowAdventure?.itemsQueuesVec[props.label]?.items ?? [],
+        thisItemsQueue?.items ?? [],
         (val: Item[]) => {
             let tmp = _.cloneDeep(nowAdventure);
             if (tmp !== null) {
@@ -80,8 +82,6 @@ export default (props: {
         setSteps(steps_c);
     };
 
-    useUpdateWhenLoading(nowAdventure?.itemsQueuesVec[props.label]);
-
     return (
         <Card sx={{ minWidth: 275, margin: 1 }}>
             <CardContent>
@@ -105,7 +105,7 @@ export default (props: {
                     {props.label}
                 </Typography>
 
-                {nowAdventure?.itemsQueuesVec[props.label] ? (
+                {thisItemsQueue ? (
                     <>
                         {props.from ? (
                             <Typography sx={{ mb: 1.5 }} color="text.secondary">
@@ -166,6 +166,7 @@ export default (props: {
                                                 ? theme.palette.primary.main
                                                 : theme.palette.warning.main
                                         }
+                                        component="span"
                                     >
                                         <FormControlLabel
                                             sx={{
@@ -245,10 +246,7 @@ export default (props: {
                                 />
                             </AccordionSummary>
                             <AccordionDetails>
-                                {(
-                                    nowAdventure?.itemsQueuesVec[props.label]
-                                        ?.desserts ?? []
-                                ).map((d) => (
+                                {(thisItemsQueue?.desserts ?? []).map((d) => (
                                     <Card
                                         square
                                         elevation={0}

@@ -1,18 +1,27 @@
 import { MDXProvider } from "@mdx-js/react";
-import Page from "@comps/Page";
 import { NextComponentType } from "next";
-
 import Alert from "@mui/material/Alert";
-import DayCheckPoint from "@comps/DayCheckPoint";
-import CPass from "@comps/CPass";
-import Check from "@comps/Check";
-import DPass from "@comps/DPass";
-import Decision from "@comps/Decision";
-import ChestQueue from "@comps/ChestQueue";
-import Shop from "@comps/Shop";
+import dynamic from "next/dynamic";
 import CustomerDOMElement from "@comps/CustomerDOMElement";
-import Fork from "@comps/Fork";
-import ForkBack from "@comps/ForkBack";
+
+const Page = dynamic(() => import("@comps/Page"), { ssr: false });
+const DayCheckPoint = dynamic(() => import("@comps/DayCheckPoint"), {
+    ssr: false,
+});
+const CPass = dynamic(() => import("@comps/CPass"), { ssr: false });
+const Check = dynamic(() => import("@comps/Check"), { ssr: false });
+const DPass = dynamic(() => import("@comps/DPass"), { ssr: false });
+const Decision = dynamic(() => import("@comps/Decision"), { ssr: false });
+const ChestQueue = dynamic(() => import("@comps/ChestQueue"), { ssr: false });
+const Shop = dynamic(() => import("@comps/Shop"), { ssr: false });
+const Fork = dynamic(() => import("@comps/Fork"), { ssr: false });
+const ForkBack = dynamic(() => import("@comps/ForkBack"), { ssr: false });
+const TaskCheckPoint = dynamic(() => import("@comps/TaskCheckPoint"), {
+    ssr: false,
+});
+const TaskSettlement = dynamic(() => import("@comps/TaskSettlement"), {
+    ssr: false,
+});
 
 const components = {
     A: Alert,
@@ -25,6 +34,8 @@ const components = {
     S: Shop,
     F: Fork,
     FB: ForkBack,
+    TCP: TaskCheckPoint,
+    TS: TaskSettlement,
     ...CustomerDOMElement,
 } as any;
 

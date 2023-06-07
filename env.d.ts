@@ -14,7 +14,7 @@ interface Goods {
     per?: "string";
 }
 
-interface MissionsCheckPoint {
+interface TaskCheckPoint {
     name: string;
     check?: boolean;
     introduce?: string;
@@ -28,10 +28,10 @@ interface Adventure {
         activeStep?: number;
     };
     shops: { [key: string]: Goods[] };
-    missions: {
+    tasks: {
         [key: string]: {
             introduce?: string;
-            checkPoints: MissionsCheckPoint[];
+            checkPoints: TaskCheckPoint[];
         };
     };
 }

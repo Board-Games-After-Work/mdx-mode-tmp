@@ -25,6 +25,7 @@ import _ from "lodash";
 import { nowAdventureA } from "@/store";
 import { useAtom } from "jotai";
 import ItemSpan from "./Item";
+import useUpdateWhenLoading from "@/useUpdateWhenLoading";
 
 export default (props: {
     label: string;
@@ -78,6 +79,8 @@ export default (props: {
 
         setSteps(steps_c);
     };
+
+    useUpdateWhenLoading(nowAdventure?.itemsQueuesVec[props.label]);
 
     return (
         <Card sx={{ minWidth: 275, margin: 1 }}>

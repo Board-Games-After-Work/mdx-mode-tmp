@@ -11,18 +11,12 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { useAtomValue } from "jotai";
 import { forkLinksMapA } from "./Fork";
 import { useEffect, useState } from "react";
+import useUpdateWhenLoading from "@/useUpdateWhenLoading";
 
 export default (props: { label: string }) => {
     const forkLink = useAtomValue(forkLinksMapA)[props.label];
-    const [count, setCount] = useState(0);
 
-    useEffect(() => {
-        if (forkLink === undefined) {
-            setTimeout(() => {
-                setCount(count + 1);
-            }, 20);
-        }
-    });
+    useUpdateWhenLoading(forkLink);
 
     return (
         <Card sx={{ minWidth: 275, margin: 1 }}>

@@ -18,8 +18,13 @@ export const nowAdventureA = atom(
             adventureTmp.itemsQueuesVec = toml.parse(
                 await (await fetch("/treasuresQueueVec.toml")).text()
             );
+
             adventureTmp.shops = toml.parse(
                 await (await fetch("/shopGoodsVec.toml")).text()
+            );
+
+            adventureTmp.missions = toml.parse(
+                await (await fetch("/MissionVec.toml")).text()
             );
 
             set(__nowAdventureA__, adventureTmp);

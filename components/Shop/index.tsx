@@ -12,6 +12,7 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import { useAtom } from "jotai";
 import { nowAdventureA } from "@/store";
+import useUpdateWhenLoading from "@/useUpdateWhenLoading";
 
 export interface Props {
     label: string;
@@ -48,6 +49,8 @@ export default (props: Props) => {
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
+
+    useUpdateWhenLoading(nowAdventure?.shops[props.label]);
 
     return (
         <Card sx={{ minWidth: 275, margin: 1 }}>

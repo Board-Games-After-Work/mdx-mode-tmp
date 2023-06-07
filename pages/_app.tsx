@@ -1,7 +1,6 @@
 import { MDXProvider } from "@mdx-js/react";
 import Page from "@comps/Page";
 import { NextComponentType } from "next";
-import { ReactElement } from "react";
 
 import Alert from "@mui/material/Alert";
 import DayCheckPoint from "@comps/DayCheckPoint";

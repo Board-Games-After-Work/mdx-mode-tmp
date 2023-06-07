@@ -1,9 +1,11 @@
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider, createStyles, createTheme } from "@mui/material/styles";
+import { StylesProvider, makeStyles } from "@mui/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
     Box,
     Button,
     Card,
+    GlobalStyles,
     IconButton,
     Toolbar,
     Typography,
@@ -21,6 +23,15 @@ export const colorModeA = atomWithStorage(
     "dark" as "dark" | "light"
 );
 
+const pageRoutes = [
+    { name: "主页", href: "/" },
+    { name: "Vol.0", href: "/" },
+    { name: "Vol.1: 艾尔萨托的陨落", href: "/Vol1" },
+    { name: "Vol.2: 伊托利亚的远航", href: "/" },
+    { name: "Vol.2.22: 与暴风雪同行", href: "/" },
+    { name: "Vol.3: 默索里哀的崛起", href: "/" },
+];
+
 export default (props: { children: ReactElement; title?: string }) => {
     const setNowAdventure = useSetAtom(nowAdventureA);
     const [isFirstRender, setIsFirstRender] = useState(true);
@@ -33,25 +44,36 @@ export default (props: { children: ReactElement; title?: string }) => {
 
     const [colorMode, setColorMode] = useAtom(colorModeA);
 
-    const Theme = createTheme({
+    const theme = createTheme({
         palette: {
             mode: colorMode,
         },
     });
 
-    const pageRoutes = [
-        { name: "主页", href: "/" },
-        { name: "Vol.0", href: "/" },
-        { name: "Vol.1: 艾尔萨托的陨落", href: "/Vol1" },
-        { name: "Vol.2: 伊托利亚的远航", href: "/" },
-        { name: "Vol.2.22: 与暴风雪同行", href: "/" },
-        { name: "Vol.3: 默索里哀的崛起", href: "/" },
-    ];
+    const selection = {
+        backgroundColor:
+            colorMode === "light"
+                ? theme.palette.secondary.dark
+                : theme.palette.info.light,
+        color:
+            colorMode === "light"
+                ? theme.palette.common.white
+                : theme.palette.common.black,
+        borderRadius: 5,
+    };
 
     useEffect(() => setIsFirstRender(false), []);
+
     return (
-        <ThemeProvider theme={Theme}>
+        <ThemeProvider theme={theme}>
             <CssBaseline />
+            <GlobalStyles
+                styles={{
+                    "*::selection": selection,
+                    "* ::-moz-selection": selection,
+                }}
+            />
+
             <Box
                 display="flex"
                 flexDirection="column"

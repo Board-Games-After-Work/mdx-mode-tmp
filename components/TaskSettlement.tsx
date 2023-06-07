@@ -42,6 +42,14 @@ export default (props: { task: string }) => {
                     {props.task}
                 </Typography>
 
+                {thisTask.introduce ? (
+                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                        {thisTask.introduce}
+                    </Typography>
+                ) : (
+                    <></>
+                )}
+
                 {thisTask ? (
                     <>
                         {thisTask.checkPoints.map((c) => (

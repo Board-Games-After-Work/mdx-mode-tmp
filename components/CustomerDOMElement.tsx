@@ -1,6 +1,18 @@
-import { Box, Divider, IconButton, Link } from "@mui/material";
+import {
+    Box,
+    Divider,
+    IconButton,
+    Link,
+    Button,
+    CardActionArea,
+    CardActions,
+} from "@mui/material";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { ReactElement } from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia, { CardMediaProps } from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
 
 const getId = (children: string | string[] | any) => {
     switch (typeof children) {
@@ -87,6 +99,44 @@ const A = (props: any) => (
 
 const HR = (props: any) => <Divider {...props} />;
 
+const IMG = (
+    props: {
+        alt?: string;
+        width: number | string;
+    } & CardMediaProps
+) => {
+    const { alt, src, width: width } = props;
+
+    return (
+        <Box
+            width="100%"
+            display="flex"
+            alignItems="center"
+            flexDirection="column"
+        >
+            <Card sx={{ maxWidth: width ?? 400 }}>
+                <CardActionArea href={src ?? ""} target="_blank">
+                    <CardMedia component="img" image={src} alt={alt} />
+                    <CardContent>
+                        {alt ? (
+                            <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                width="100%"
+                                textAlign="center"
+                            >
+                                {alt}
+                            </Typography>
+                        ) : (
+                            <></>
+                        )}
+                    </CardContent>
+                </CardActionArea>
+            </Card>
+        </Box>
+    );
+};
+
 export default {
     h1: H1,
     h2: H2,
@@ -96,4 +146,5 @@ export default {
     h6: H6,
     hr: HR,
     a: A,
+    img: IMG,
 };

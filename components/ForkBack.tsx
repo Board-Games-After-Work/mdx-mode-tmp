@@ -9,15 +9,19 @@ import {
 import VerticalAlignTopIcon from "@mui/icons-material/VerticalAlignTop";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { useAtomValue } from "jotai";
-import { forkLinksMapA } from "./Fork";
+import { forkLinksMapA, forkUpdateTriggerA } from "./Fork";
 import { useEffect, useState } from "react";
 import useUpdateWhenLoading from "@/useUpdateWhenLoading";
 
 export default (props: { label: string }) => {
+    const updateTrigger = useAtomValue(forkUpdateTriggerA);
     const forkLink = useAtomValue(forkLinksMapA)[props.label];
 
     useUpdateWhenLoading(forkLink);
 
+    useEffect(() => {
+        updateTrigger;
+    }, [updateTrigger]);
     return (
         <Card sx={{ minWidth: 275, margin: 1 }}>
             {forkLink ? (

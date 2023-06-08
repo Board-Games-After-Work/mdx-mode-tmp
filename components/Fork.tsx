@@ -2,7 +2,7 @@ import { Card, CardActionArea, CardContent, Typography } from "@mui/material";
 import AltRouteIcon from "@mui/icons-material/AltRoute";
 import MapIcon from "@mui/icons-material/Map";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import { atom, useAtom } from "jotai";
+import { atom, useAtom, useAtomValue } from "jotai";
 import { v4 as uuid } from "uuid";
 import { useEffect, useState } from "react";
 
@@ -11,13 +11,15 @@ export interface ForkLinksMap {
 }
 
 export const forkLinksMapA = atom({} as ForkLinksMap);
+export const forkUpdateTriggerA = atom(false);
 
 export default (props: {
     title: string;
     labels: (string | { name: string; introduce: string })[];
 }) => {
     const [isFirstRender, setIsFirstRender] = useState(true);
-    const [forkLinksMap, setForkLinksMap] = useAtom(forkLinksMapA);
+    const forkLinksMap = useAtomValue(forkLinksMapA);
+    const [updateTrigger, setUpdateTrigger] = useAtom(forkUpdateTriggerA);
     const [id, setId] = useState("");
 
     useEffect(() => {
@@ -36,8 +38,17 @@ export default (props: {
                           introduce: l.introduce,
                       })
             );
+
+            setUpdateTrigger(!updateTrigger);
         }
-    }, [forkLinksMap, isFirstRender, props.labels, props.title]);
+    }, [
+        forkLinksMap,
+        isFirstRender,
+        props.labels,
+        props.title,
+        setUpdateTrigger,
+        updateTrigger,
+    ]);
 
     useEffect(() => setIsFirstRender(false), []);
     return (

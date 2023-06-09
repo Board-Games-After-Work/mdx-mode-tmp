@@ -6,6 +6,7 @@ import {
     Button,
     CardActionArea,
     CardActions,
+    Chip,
 } from "@mui/material";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { ReactElement } from "react";
@@ -137,6 +138,24 @@ const IMG = (
     );
 };
 
+const CODE = (props: { children: ReactElement }) => (
+    <Chip
+        label={<Typography whiteSpace="pre">{props.children}</Typography>}
+        size="small"
+        variant="outlined"
+        color= "secondary"
+        sx={{
+            mx: 0.4,
+            height: "auto",
+            "& .MuiChip-label": {
+                display: "block",
+                whiteSpace: "normal",
+            },
+        }}
+        component="code"
+    />
+);
+
 export default {
     h1: H1,
     h2: H2,
@@ -147,4 +166,5 @@ export default {
     hr: HR,
     a: A,
     img: IMG,
+    code: CODE,
 };

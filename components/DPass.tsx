@@ -19,7 +19,7 @@ export default (props: {
                 <Typography>{props.title}</Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ borderLeft: "solid 2px" }}>
-                <Typography>{props.cause}</Typography>
+                <Typography whiteSpace="pre">{props.cause}</Typography>
                 {props.children ?? <PassEnd />}
             </AccordionDetails>
         </Accordion>

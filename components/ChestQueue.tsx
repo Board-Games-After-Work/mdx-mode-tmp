@@ -14,7 +14,7 @@ import {
     Chip,
 } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import DiamondIcon from "@mui/icons-material/Diamond";
+import DynamicFormIcon from '@mui/icons-material/DynamicForm';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
@@ -94,11 +94,11 @@ export default (props: {
                     color="text.secondary"
                     gutterBottom
                 >
-                    <DiamondIcon
+                    <DynamicFormIcon
                         fontSize="small"
                         sx={{ marginRight: 0.2, marginTop: -0.1 }}
                     />{" "}
-                    奖励队列
+                    队列
                 </Typography>
 
                 <Typography variant="h5" component="div">

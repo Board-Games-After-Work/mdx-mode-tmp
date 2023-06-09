@@ -29,7 +29,11 @@ export default (props: {
                     {props.title}
                 </Typography>
 
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                <Typography
+                    sx={{ mb: 1.5 }}
+                    color="text.secondary"
+                    whiteSpace="pre"
+                >
                     {props.introduce}
                 </Typography>
 

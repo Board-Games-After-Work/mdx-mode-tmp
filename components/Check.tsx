@@ -46,7 +46,7 @@ export default (props: {
                         </Typography>
                     </Box>
                 </Tooltip>
-                <Typography variant="body2">{props.introduce}</Typography>
+                <Typography variant="body2" whiteSpace="pre">{props.introduce}</Typography>
                 {props.children}
             </CardContent>
         </Card>

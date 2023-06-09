@@ -3,6 +3,7 @@ import { NextComponentType } from "next";
 import Alert from "@mui/material/Alert";
 import dynamic from "next/dynamic";
 import CustomerDOMElement from "@comps/CustomerDOMElement";
+import { Typography } from "@mui/material";
 
 const Page = dynamic(() => import("@comps/Page"), { ssr: false });
 const DayCheckPoint = dynamic(() => import("@comps/DayCheckPoint"), {
@@ -49,7 +50,9 @@ export default function Post({
     return (
         <Page>
             <MDXProvider components={components}>
-                <Component {...pageProps} />
+                <Typography component="span">
+                    <Component {...pageProps} />
+                </Typography>
             </MDXProvider>
         </Page>
     );

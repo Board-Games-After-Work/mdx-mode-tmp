@@ -13,7 +13,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { ReactElement, useEffect, useState } from "react";
 import Link from "next/link";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { nowAdventureA } from "@/store";
 
@@ -32,7 +32,7 @@ const pageRoutes = [
 ];
 
 export default (props: { children: ReactElement; title?: string }) => {
-    const setNowAdventure = useSetAtom(nowAdventureA);
+    const [nowAdventure, setNowAdventure] = useAtom(nowAdventureA);
     const [isFirstRender, setIsFirstRender] = useState(true);
 
     useEffect(() => {
@@ -101,13 +101,16 @@ export default (props: { children: ReactElement; title?: string }) => {
                                     <LightModeIcon />
                                 )}
                             </IconButton>
+
                             <Typography
                                 variant="h6"
                                 component="div"
                                 sx={{ flexGrow: 1 }}
                             >
-                                {props.title ?? ""}
+                                正在进行:{" "}
+                                <strong>{nowAdventure?.name ?? ""}</strong>
                             </Typography>
+
                             {pageRoutes.map((i, index) => (
                                 <Link href={i.href} key={index}>
                                     <Button sx={{ marginX: 1 }}>

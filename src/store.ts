@@ -1,5 +1,9 @@
 import { atom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 import toml from "toml";
+import { newAdventure } from "./utils";
+
+export const adventuresA = atomWithStorage("adventures", [] as Adventure[]);
 
 const __nowAdventureA__ = atom(null as Adventure | null);
 
@@ -7,27 +11,7 @@ export const nowAdventureA = atom(
     (get) => get(__nowAdventureA__),
     async (_get, set, val?: Adventure) => {
         if (val === undefined) {
-            let adventureTmp = {
-                name: "示例冒险",
-                players: [],
-                itemsQueuesVec: {},
-                shops: {},
-                tasks: {},
-            } as Adventure;
-
-            adventureTmp.itemsQueuesVec = toml.parse(
-                await (await fetch("/treasuresQueueVec.toml")).text()
-            );
-
-            adventureTmp.shops = toml.parse(
-                await (await fetch("/shopGoodsVec.toml")).text()
-            );
-
-            adventureTmp.tasks = toml.parse(
-                await (await fetch("/TasksVec.toml")).text()
-            );
-
-            set(__nowAdventureA__, adventureTmp);
+            set(__nowAdventureA__, await newAdventure());
         } else {
             set(__nowAdventureA__, () => val);
         }

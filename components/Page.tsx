@@ -72,13 +72,13 @@ export default (props: { children: ReactElement; title?: string }) => {
     useEffect(() => {
         let tmp = nowAdventure;
 
-        if (tmp?.history) {
+        if (tmp?.history && router.pathname !== "/") {
             tmp.history.header = history[0];
             tmp.history.page = history[1];
 
             setNowAdventure(tmp);
         }
-    }, [history, nowAdventure, setNowAdventure]);
+    }, [history, nowAdventure, router.pathname, setNowAdventure]);
 
     useEffect(() => {
         if (isFirstRender) {

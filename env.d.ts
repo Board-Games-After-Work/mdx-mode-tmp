@@ -25,6 +25,7 @@ interface Adventure {
     history: {
         mod: string;
         header?: string;
+        image?: string;
     };
     players: Item[];
     itemsQueuesVec: {

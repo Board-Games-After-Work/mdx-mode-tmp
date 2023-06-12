@@ -35,7 +35,7 @@ export default () => {
                 height={300}
                 display="flex"
                 flexDirection="row"
-                sx={{ overflowX: "auto" }}
+                sx={{ overflowX: "auto", overflowY: "hidden" }}
             >
                 <Card sx={{ m: 2, width: 190, minWidth: 190, maxWidth: 190 }}>
                     <CardActionArea onClick={() => setIsCreating(true)}>

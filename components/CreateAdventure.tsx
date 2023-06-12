@@ -20,6 +20,7 @@ import {
     Tooltip,
 } from "@mui/material";
 import { useAtomValue } from "jotai";
+import _ from "lodash";
 import { useState } from "react";
 
 export default (props: {
@@ -37,9 +38,28 @@ export default (props: {
 
     const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
+    const onSubmit = async () => {
+        if (name && adventures.findIndex((a) => a?.name === name) === -1) {
+            let tmp = inheritAdventure
+                ? inheritAdventure
+                : await newAdventure();
+
+            tmp.name = name;
+
+            props.onClose(tmp);
+        } else setIsSnackbarOpen(true);
+    };
+
     return (
         <>
-            <Dialog open={props.open} onClose={() => props.onClose(null)}>
+            <Dialog
+                open={props.open}
+                onClose={() => props.onClose(null)}
+                onKeyDown={(evt) => {
+                    if (evt.key === "Enter") onSubmit();
+                }}
+                onSubmit={onSubmit}
+            >
                 <DialogTitle>新建冒险</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -81,10 +101,13 @@ export default (props: {
                                     value={inheritAdventure?.name}
                                     onChange={(evt) =>
                                         setInheritAdventure(
-                                            adventures.find(
-                                                (a) =>
-                                                    a.name === evt.target.value
-                                            ) ?? null
+                                            _.cloneDeep(
+                                                adventures.find(
+                                                    (a) =>
+                                                        a.name ===
+                                                        evt.target.value
+                                                ) ?? null
+                                            )
                                         )
                                     }
                                 >
@@ -102,26 +125,7 @@ export default (props: {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => props.onClose(null)}>取消</Button>
-                    <Button
-                        onClick={async () => {
-                            console.log(name);
-                            if (
-                                name &&
-                                adventures.findIndex((a) => a?.name === name) ===
-                                    -1
-                            ) {
-                                let tmp = inheritAdventure
-                                    ? inheritAdventure
-                                    : await newAdventure();
-
-                                tmp.name = name;
-
-                                props.onClose(tmp);
-                            } else setIsSnackbarOpen(true);
-                        }}
-                    >
-                        完成
-                    </Button>
+                    <Button onClick={onSubmit}>完成</Button>
                 </DialogActions>
             </Dialog>
 

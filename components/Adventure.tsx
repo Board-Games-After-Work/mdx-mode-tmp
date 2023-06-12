@@ -2,14 +2,13 @@ import {
     Card,
     CardActionArea,
     CardContent,
+    CardMedia,
     Chip,
-    IconButton,
     Stack,
-    useTheme,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useAtom } from "jotai";
 import { adventuresA, nowAdventureA } from "@/store";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default (props: {
     val: Adventure | null;
@@ -31,6 +30,8 @@ export default (props: {
         setNowAdventure(undefined);
     };
 
+    const image = nowAdventure?.history.image ?? "None";
+
     return (
         <Card
             sx={{
@@ -38,6 +39,7 @@ export default (props: {
                 width: 190,
                 minWidth: 190,
                 maxWidth: 190,
+                height: 270,
             }}
             elevation={
                 props.selectable &&
@@ -51,7 +53,7 @@ export default (props: {
             nowAdventure?.name &&
             nowAdventure?.name === props.val?.name ? (
                 <>
-                    <CardContent sx={{ height: 272 }}>
+                    <CardContent>
                         <Stack
                             direction="row"
                             spacing={2}
@@ -60,27 +62,29 @@ export default (props: {
                         >
                             <Chip
                                 label={props.val?.name ?? "无冒险"}
-                                size="small"
-                                sx={{ mr: -1 }}
+                                size="medium"
+                                variant="outlined"
+                                sx={{ width: "100%" }}
+                                deleteIcon={<DeleteIcon />}
+                                onDelete={onDel}
                             />
-
-                            <IconButton
-                                aria-label="delete"
-                                size="small"
-                                onClick={onDel}
-                            >
-                                <DeleteIcon fontSize="small" />
-                            </IconButton>
                         </Stack>
                     </CardContent>
+
+                    <CardMedia
+                        sx={{ height: "100%" }}
+                        image={image}
+                        title="green iguana"
+                    />
                 </>
             ) : (
                 <CardActionArea
                     onClick={() =>
                         props.onClick ? props.onClick(props.val ?? null) : {}
                     }
+                    sx={{ height: 270 }}
                 >
-                    <CardContent sx={{ height: 270 }}>
+                    <CardContent>
                         <Stack
                             direction="row"
                             spacing={2}
@@ -89,11 +93,18 @@ export default (props: {
                         >
                             <Chip
                                 label={props.val?.name ?? "无冒险"}
-                                size="small"
-                                sx={{ mr: -1 }}
+                                variant="outlined"
+                                sx={{ width: "100%" }}
+                                size="medium"
                             />
                         </Stack>
                     </CardContent>
+
+                    <CardMedia
+                        sx={{ height: "100%" }}
+                        image={image}
+                        title="green iguana"
+                    />
                 </CardActionArea>
             )}
         </Card>

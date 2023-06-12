@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import HomeIcon from "@mui/icons-material/Home";
 import { ReactElement, useEffect, useState } from "react";
 import Link from "next/link";
 import { atom, useAtom, useAtomValue } from "jotai";
@@ -24,7 +25,6 @@ export const colorModeA = atomWithStorage(
 );
 
 export const pageRoutes = [
-    { name: "主页", href: "/" },
     { name: "Vol.0", href: "/" },
     { name: "Vol.1: 艾尔萨托的陨落", href: "/Vol1" },
     { name: "Vol.2: 伊托利亚的远航", href: "/" },
@@ -125,6 +125,17 @@ export default (props: { children: ReactElement; title?: string }) => {
                 <Box width="100%">
                     <Card>
                         <Toolbar>
+                            <IconButton
+                                size="large"
+                                edge="start"
+                                color="inherit"
+                                aria-label="menu"
+                                sx={{ mr: 2 }}
+                                href="/"
+                            >
+                                <HomeIcon />
+                            </IconButton>
+
                             <IconButton
                                 size="large"
                                 edge="start"

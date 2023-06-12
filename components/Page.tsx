@@ -56,7 +56,7 @@ export default (props: { children: ReactElement; title?: string }) => {
                         break;
                     }
                 }
-            }, 1000);
+            }, 500);
         }
     }, [
         headersList,

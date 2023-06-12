@@ -48,9 +48,12 @@ export default () => {
                         上次进度:
                     </Typography>
                     <Typography variant="h2" margin={2} component="div" my={-2}>
-                        {pageRoutes.find(
-                            (val) => val.href === nowAdventure?.history?.page
-                        )?.name ?? "新冒险"}
+                        {nowAdventure?.history?.page !== "/"
+                            ? pageRoutes.find(
+                                  (val) =>
+                                      val.href === nowAdventure?.history?.page
+                              )?.name
+                            : "新冒险"}
                     </Typography>
                     <Typography variant="h3" margin={2} component="div">
                         {nowAdventure?.history?.header ?? ""}

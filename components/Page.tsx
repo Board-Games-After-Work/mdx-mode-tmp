@@ -37,10 +37,7 @@ export const headersListA = atom([] as (() => string | null)[]);
 export default (props: { children: ReactElement; title?: string }) => {
     const [isFirstRender, setIsFirstRender] = useState(true);
 
-    const [history, setHistory] = useState([undefined, "main page"] as [
-        string | undefined,
-        string
-    ]);
+    const [history, setHistory] = useState(undefined as string | undefined);
 
     const [nowAdventure, setNowAdventure] = useAtom(nowAdventureA);
 
@@ -55,7 +52,7 @@ export default (props: { children: ReactElement; title?: string }) => {
                     const header = f();
 
                     if (header) {
-                        setHistory([header, router.pathname]);
+                        setHistory(header);
                         break;
                     }
                 }
@@ -73,8 +70,8 @@ export default (props: { children: ReactElement; title?: string }) => {
         let tmp = nowAdventure;
 
         if (tmp?.history && router.pathname !== "/") {
-            tmp.history.header = history[0];
-            tmp.history.page = history[1];
+            tmp.history.header = history;
+            tmp.history.page = router.pathname;
 
             setNowAdventure(tmp);
         }

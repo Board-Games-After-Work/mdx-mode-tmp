@@ -107,7 +107,7 @@ export default (props: {
                             console.log(name);
                             if (
                                 name &&
-                                adventures.findIndex((a) => a.name === name) ===
+                                adventures.findIndex((a) => a?.name === name) ===
                                     -1
                             ) {
                                 let tmp = inheritAdventure

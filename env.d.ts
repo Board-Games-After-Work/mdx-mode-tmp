@@ -22,9 +22,9 @@ interface TaskCheckPoint {
 
 interface Adventure {
     name: string;
-    history?: {
+    history: {
         mod: string;
-        header: string;
+        header?: string;
     };
     players: Item[];
     itemsQueuesVec: {

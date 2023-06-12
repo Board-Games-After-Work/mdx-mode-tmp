@@ -22,7 +22,7 @@ export const colorModeA = atomWithStorage(
     "dark" as "dark" | "light"
 );
 
-const pageRoutes = [
+export const pageRoutes = [
     { name: "主页", href: "/" },
     { name: "Vol.0", href: "/" },
     { name: "Vol.1: 艾尔萨托的陨落", href: "/Vol1" },

@@ -3,9 +3,7 @@ import {
     Divider,
     IconButton,
     Link,
-    Button,
     CardActionArea,
-    CardActions,
     Chip,
 } from "@mui/material";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
@@ -27,6 +25,8 @@ const getId = (children: string | string[] | any) => {
 };
 
 const Warper = (props: { children: ReactElement; subId: string }) => {
+    console.log(props.subId);
+
     return (
         <Box display="flex" alignItems="center">
             <IconButton size="small" href={"#" + props.subId}>
@@ -143,7 +143,7 @@ const CODE = (props: { children: ReactElement }) => (
         label={<Typography whiteSpace="pre">{props.children}</Typography>}
         size="small"
         variant="outlined"
-        color= "secondary"
+        color="secondary"
         sx={{
             mx: 0.4,
             height: "auto",

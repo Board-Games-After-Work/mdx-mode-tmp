@@ -53,10 +53,11 @@ export default () => {
                     </CardActionArea>
                 </Card>
 
-                {adventures.map((a) => (
+                {adventures.map((a, i) => (
                     <Adventure
+                        selectable
                         val={a}
-                        key={a.name}
+                        key={i}
                         onClick={(val) => setNowAdventure(val ?? undefined)}
                     />
                 ))}

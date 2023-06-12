@@ -3,6 +3,9 @@ import toml from "toml";
 export const newAdventure = async (): Promise<Adventure> => {
     let adventureTmp = {
         name: "示例冒险",
+        history: {
+            mod: "main page",
+        },
         players: [],
         itemsQueuesVec: {},
         shops: {},

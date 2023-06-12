@@ -13,10 +13,10 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { ReactElement, useEffect, useState } from "react";
 import Link from "next/link";
-import { useAtom } from "jotai";
+import { atom, useAtom, useAtomValue } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { nowAdventureA } from "@/store";
-import useScanHeaders from "@/useScanHeaders";
+import { useRouter } from "next/router";
 
 export const colorModeA = atomWithStorage(
     "darkMode",
@@ -32,11 +32,53 @@ export const pageRoutes = [
     { name: "Vol.3: 默索里哀的崛起", href: "/" },
 ];
 
+export const headersListA = atom([] as (() => string | null)[]);
+
 export default (props: { children: ReactElement; title?: string }) => {
-    useScanHeaders();
+    const [isFirstRender, setIsFirstRender] = useState(true);
+
+    const [history, setHistory] = useState([undefined, "main page"] as [
+        string | undefined,
+        string
+    ]);
 
     const [nowAdventure, setNowAdventure] = useAtom(nowAdventureA);
-    const [isFirstRender, setIsFirstRender] = useState(true);
+
+    const headersList = useAtomValue(headersListA);
+
+    const router = useRouter();
+
+    useEffect(() => {
+        if (isFirstRender) {
+            setInterval(() => {
+                for (const f of headersList) {
+                    const header = f();
+
+                    if (header) {
+                        setHistory([header, router.pathname]);
+                        break;
+                    }
+                }
+            }, 1000);
+        }
+    }, [
+        headersList,
+        isFirstRender,
+        nowAdventure,
+        router.pathname,
+        setNowAdventure,
+    ]);
+
+    useEffect(() => {
+        let tmp = nowAdventure;
+
+        if (tmp?.history) {
+            tmp.history.header = history[0];
+            tmp.history.page = history[1];
+
+            setNowAdventure(tmp);
+        }
+    }, [history, nowAdventure, setNowAdventure]);
 
     useEffect(() => {
         if (isFirstRender) {

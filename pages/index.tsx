@@ -13,6 +13,7 @@ import { useState } from "react";
 import { adventuresA, nowAdventureA } from "@/store";
 import { useAtom } from "jotai";
 import { useRouter } from "next/router";
+import { pageRoutes } from "@comps/Page";
 
 export default () => {
     const [isCreating, setIsCreating] = useState(false);
@@ -46,9 +47,10 @@ export default () => {
                     <Typography variant="h5" margin={2} component="div">
                         上次进度:
                     </Typography>
-                    <Typography variant="h1" margin={2} component="div" my={-2}>
-                        {nowAdventure?.history?.page?.replace("/", "") ??
-                            "新冒险"}
+                    <Typography variant="h2" margin={2} component="div" my={-2}>
+                        {pageRoutes.find(
+                            (val) => val.href === nowAdventure?.history?.page
+                        )?.name ?? "新冒险"}
                     </Typography>
                     <Typography variant="h3" margin={2} component="div">
                         {nowAdventure?.history?.header ?? ""}

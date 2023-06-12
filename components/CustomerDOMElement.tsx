@@ -19,7 +19,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia, { CardMediaProps } from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { useAtom } from "jotai";
-import { headersListA } from "@/useScanHeaders";
+import { headersListA } from "@comps/Page";
 
 const getId = (children: string | string[] | any) => {
     switch (typeof children) {

@@ -54,7 +54,11 @@ export default () => {
                 </Card>
 
                 {adventures.map((a) => (
-                    <Adventure val={a} key={a.name} />
+                    <Adventure
+                        val={a}
+                        key={a.name}
+                        onClick={(val) => setNowAdventure(val ?? undefined)}
+                    />
                 ))}
             </Box>
 

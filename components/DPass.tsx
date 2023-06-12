@@ -16,10 +16,12 @@ export default (props: {
     return (
         <Accordion sx={{ boxShadow: "none" }}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>{props.title}</Typography>
+                <Typography component="div">{props.title}</Typography>
             </AccordionSummary>
             <AccordionDetails sx={{ borderLeft: "solid 2px" }}>
-                <Typography whiteSpace="pre">{props.cause}</Typography>
+                <Typography whiteSpace="pre" component="div">
+                    {props.cause}
+                </Typography>
                 {props.children ?? <PassEnd />}
             </AccordionDetails>
         </Accordion>

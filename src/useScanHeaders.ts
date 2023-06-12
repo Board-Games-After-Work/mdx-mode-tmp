@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { nowAdventureA } from "./store";
 import { useRouter } from "next/router";
 import { pageRoutes } from "@comps/Page";
+import useUpdateWhenLoading from "./useUpdateWhenLoading";
 
 /**
  * return null as not visible
@@ -18,16 +19,10 @@ export default () => {
 
     const router = useRouter();
 
+    useUpdateWhenLoading(nowAdventure?.history.header);
+    useUpdateWhenLoading(nowAdventure?.history.page);
+
     useEffect(() => {
-        if (nowAdventure?.history) {
-            const url =
-                pageRoutes.find((v) => v.name === nowAdventure.history.mod) +
-                "/" +
-                nowAdventure.history.header;
-
-            router.push(url);
-        }
-
         if (isFirstRender) {
             setInterval(() => {
                 for (const f of headersList) {
@@ -36,10 +31,13 @@ export default () => {
 
                     if (header && tmp?.history) {
                         tmp.history.header = header;
+                        tmp.history.page = router.pathname;
+
                         setNowAdventure(tmp);
+                        break;
                     }
                 }
-            }, 200);
+            }, 500);
         }
     });
 

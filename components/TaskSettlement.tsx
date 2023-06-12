@@ -29,6 +29,7 @@ export default (props: { task: string }) => {
                         alignItems: "center",
                     }}
                     color="text.secondary"
+                    component="div"
                     gutterBottom
                 >
                     <AssignmentTurnedInIcon
@@ -43,7 +44,7 @@ export default (props: { task: string }) => {
                 </Typography>
 
                 {thisTask?.introduce ? (
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                    <Typography sx={{ mb: 1.5 }} color="text.secondary" component="div">
                         {thisTask?.introduce}
                     </Typography>
                 ) : (

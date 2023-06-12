@@ -3,7 +3,7 @@ import { Chip, Stack, Typography } from "@mui/material";
 export default (props: { val: Item | null | undefined }) => {
     return (
         <>
-            <Typography variant="h6">
+            <Typography variant="h6" component="div">
                 {props.val?.name ?? "未选择物品"}
             </Typography>
 
@@ -63,7 +63,7 @@ export default (props: { val: Item | null | undefined }) => {
                 <></>
             )}
 
-            <Typography marginTop={2} whiteSpace="pre">
+            <Typography marginTop={2} whiteSpace="pre" component="div">
                 <code>{props.val?.introduce ?? ""}</code>
             </Typography>
         </>

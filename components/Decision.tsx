@@ -17,6 +17,7 @@ export default (props: {
                         alignItems: "center",
                     }}
                     color="text.secondary"
+                    component="div"
                     gutterBottom
                 >
                     <BalanceIcon
@@ -33,6 +34,7 @@ export default (props: {
                     sx={{ mb: 1.5 }}
                     color="text.secondary"
                     whiteSpace="pre"
+                    component="div"
                 >
                     {props.introduce}
                 </Typography>

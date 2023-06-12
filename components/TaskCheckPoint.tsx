@@ -133,6 +133,7 @@ export default (props: {
                                 <Typography
                                     sx={{ mb: 1.5 }}
                                     color="text.secondary"
+                                    component="div"
                                 >
                                     {thisCheckPoint.introduce}
                                 </Typography>
@@ -209,6 +210,7 @@ export default (props: {
                                 display="flex"
                                 flexDirection="column"
                                 alignItems="center"
+                                component="div"
                             >
                                 <VerticalAlignBottomIcon
                                     fontSize="large"
@@ -245,6 +247,7 @@ export default (props: {
                                 display="flex"
                                 flexDirection="column"
                                 alignItems="center"
+                                component="div"
                             >
                                 <VerticalAlignTopIcon
                                     fontSize="large"

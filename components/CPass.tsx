@@ -30,7 +30,7 @@ export default (props: {
                             paddingX: 0.3,
                             flexShrink: 0,
                             border: "solid 0.5px",
-                            boxShadow: "none"
+                            boxShadow: "none",
                         }}
                     >
                         {props.dc === 0 ? "未通过" : "DC ≥ " + props.dc}
@@ -38,7 +38,9 @@ export default (props: {
                 </Tooltip>
             </AccordionSummary>
             <AccordionDetails sx={{ borderLeft: "solid 2px" }}>
-                <Typography whiteSpace="pre">{props.cause}</Typography>
+                <Typography whiteSpace="pre" component="div">
+                    {props.cause}
+                </Typography>
                 {props.children ?? <PassEnd />}
             </AccordionDetails>
         </Accordion>

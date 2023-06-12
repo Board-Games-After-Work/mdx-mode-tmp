@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { nowAdventureA } from "@/store";
+import useScanHeaders from "@/useScanHeaders";
 
 export const colorModeA = atomWithStorage(
     "darkMode",
@@ -32,6 +33,8 @@ export const pageRoutes = [
 ];
 
 export default (props: { children: ReactElement; title?: string }) => {
+    useScanHeaders();
+
     const [nowAdventure, setNowAdventure] = useAtom(nowAdventureA);
     const [isFirstRender, setIsFirstRender] = useState(true);
 

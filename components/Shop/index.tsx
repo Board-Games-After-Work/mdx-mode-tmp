@@ -62,6 +62,7 @@ export default (props: Props) => {
                         alignItems: "center",
                     }}
                     color="text.secondary"
+                    component="div"
                     gutterBottom
                 >
                     <StorefrontIcon

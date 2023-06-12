@@ -31,6 +31,8 @@ export default (props: {
     };
 
     const image = nowAdventure?.history.image ?? "None";
+    const labelName =
+        props.val?.name + (props.val?.history.page ?? "") ?? "无冒险";
 
     return (
         <Card
@@ -61,7 +63,7 @@ export default (props: {
                             height={30}
                         >
                             <Chip
-                                label={props.val?.name ?? "无冒险"}
+                                label={labelName}
                                 size="medium"
                                 variant="outlined"
                                 sx={{ width: "100%" }}
@@ -92,7 +94,7 @@ export default (props: {
                             height={30}
                         >
                             <Chip
-                                label={props.val?.name ?? "无冒险"}
+                                label={labelName}
                                 variant="outlined"
                                 sx={{ width: "100%" }}
                                 size="medium"

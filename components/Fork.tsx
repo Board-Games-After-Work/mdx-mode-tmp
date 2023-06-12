@@ -61,6 +61,7 @@ export default (props: {
                         alignItems: "center",
                     }}
                     color="text.secondary"
+                    component="div"
                     gutterBottom
                 >
                     <AltRouteIcon
@@ -93,6 +94,7 @@ export default (props: {
                                             alignItems: "center",
                                         }}
                                         color="text.secondary"
+                                        component="div"
                                         gutterBottom
                                     >
                                         <MapIcon
@@ -104,7 +106,7 @@ export default (props: {
                                         />
                                         点击前往
                                     </Typography>
-                                    <Typography variant="h6">
+                                    <Typography variant="h6" component="div">
                                         {props.title}
                                         <KeyboardArrowRightIcon
                                             sx={{ marginBottom: -0.7 }}
@@ -133,6 +135,7 @@ export default (props: {
                                             alignItems: "center",
                                         }}
                                         color="text.secondary"
+                                        component="div"
                                         gutterBottom
                                     >
                                         <MapIcon
@@ -144,14 +147,18 @@ export default (props: {
                                         />
                                         点击前往
                                     </Typography>
-                                    <Typography variant="h6">
+                                    <Typography variant="h6" component="div">
                                         {props.title}
                                         <KeyboardArrowRightIcon
                                             sx={{ marginBottom: -0.7 }}
                                         />
                                         {v.name}
                                     </Typography>
-                                    <Typography marginTop={2} whiteSpace="pre">
+                                    <Typography
+                                        marginTop={2}
+                                        whiteSpace="pre"
+                                        component="div"
+                                    >
                                         {v.introduce}
                                     </Typography>
                                 </CardContent>

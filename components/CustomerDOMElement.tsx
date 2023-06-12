@@ -7,11 +7,19 @@ import {
     Chip,
 } from "@mui/material";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-import { ReactElement } from "react";
+import {
+    MutableRefObject,
+    ReactElement,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia, { CardMediaProps } from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import { useAtom } from "jotai";
+import { headersListA } from "@/useScanHeaders";
 
 const getId = (children: string | string[] | any) => {
     switch (typeof children) {
@@ -25,10 +33,28 @@ const getId = (children: string | string[] | any) => {
 };
 
 const Warper = (props: { children: ReactElement; subId: string }) => {
-    console.log(props.subId);
+    const [headersList, setHeadersList] = useAtom(headersListA);
+
+    const el = useRef() as MutableRefObject<HTMLDivElement>;
+
+    useEffect(() => {
+        let tmp = headersList;
+
+        tmp.push(() => {
+            if (!el?.current?.getBoundingClientRect) return null;
+
+            const offset = el.current.getBoundingClientRect();
+
+            if (offset.top <= innerHeight && offset.bottom >= 0)
+                return props.subId;
+            else return null;
+        });
+
+        setHeadersList(tmp);
+    });
 
     return (
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" ref={el}>
             <IconButton size="small" href={"#" + props.subId}>
                 <AttachFileIcon fontSize="inherit" />
             </IconButton>
@@ -121,6 +147,7 @@ const IMG = (
                     <CardContent>
                         {alt ? (
                             <Typography
+                                component="div"
                                 variant="body2"
                                 color="text.secondary"
                                 width="100%"
@@ -140,7 +167,11 @@ const IMG = (
 
 const CODE = (props: { children: ReactElement }) => (
     <Chip
-        label={<Typography whiteSpace="pre">{props.children}</Typography>}
+        label={
+            <Typography whiteSpace="pre" component="div">
+                {props.children}
+            </Typography>
+        }
         size="small"
         variant="outlined"
         color="secondary"
@@ -152,7 +183,7 @@ const CODE = (props: { children: ReactElement }) => (
                 whiteSpace: "normal",
             },
         }}
-        component="code"
+        component="span"
     />
 );
 
@@ -167,4 +198,5 @@ export default {
     a: A,
     img: IMG,
     code: CODE,
+    p: (props: any) => <div {...props}></div>,
 };

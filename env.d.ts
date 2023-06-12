@@ -23,7 +23,7 @@ interface TaskCheckPoint {
 interface Adventure {
     name: string;
     history: {
-        mod: string;
+        page: string;
         header?: string;
         image?: string;
     };

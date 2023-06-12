@@ -37,6 +37,7 @@ export default (props: { label: string }) => {
                                 alignItems: "center",
                             }}
                             color="text.secondary"
+                            component="div"
                             gutterBottom
                         >
                             <VerticalAlignTopIcon
@@ -45,7 +46,7 @@ export default (props: { label: string }) => {
                             />
                             点击返回分支
                         </Typography>
-                        <Typography variant="h5">
+                        <Typography variant="h5" component="div">
                             {props.label}
                             <KeyboardArrowRightIcon
                                 sx={{ marginBottom: -0.7 }}

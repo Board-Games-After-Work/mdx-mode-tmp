@@ -15,6 +15,7 @@ export default (props: {
         <Card sx={{ minWidth: 275, margin: 1 }}>
             <CardContent>
                 <Typography
+                    component="div"
                     sx={{
                         fontSize: 15,
                         display: "flex",
@@ -41,12 +42,18 @@ export default (props: {
                     }
                 >
                     <Box>
-                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                        <Typography
+                            sx={{ mb: 1.5 }}
+                            color="text.secondary"
+                            component="div"
+                        >
                             {props.to ?? "所有人"}进行一个{props.type}检定
                         </Typography>
                     </Box>
                 </Tooltip>
-                <Typography variant="body2" whiteSpace="pre">{props.introduce}</Typography>
+                <Typography variant="body2" whiteSpace="pre" component="div">
+                    {props.introduce}
+                </Typography>
                 {props.children}
             </CardContent>
         </Card>

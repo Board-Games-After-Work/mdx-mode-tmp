@@ -14,7 +14,7 @@ import {
     Chip,
 } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import DynamicFormIcon from '@mui/icons-material/DynamicForm';
+import DynamicFormIcon from "@mui/icons-material/DynamicForm";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
@@ -86,6 +86,7 @@ export default (props: {
         <Card sx={{ minWidth: 275, margin: 1 }}>
             <CardContent>
                 <Typography
+                    component="div"
                     sx={{
                         fontSize: 15,
                         display: "flex",
@@ -108,7 +109,11 @@ export default (props: {
                 {thisItemsQueue ? (
                     <>
                         {props.from ? (
-                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                            <Typography
+                                sx={{ mb: 1.5 }}
+                                color="text.secondary"
+                                component="div"
+                            >
                                 位于 {props.from}, 建议进度为
                                 <Chip
                                     component="span"
@@ -136,6 +141,7 @@ export default (props: {
                                     sx={{ height: 60, display: "flex" }}
                                 >
                                     <Typography
+                                        component="div"
                                         color={
                                             steps[activeStep]?.check
                                                 ? theme.palette.success.main

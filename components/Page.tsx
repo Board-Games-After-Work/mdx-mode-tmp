@@ -43,13 +43,15 @@ export default (props: { children: ReactElement; title?: string }) => {
     const router = useRouter();
 
     useEffect(() => {
-        if (isBeforeScroll && !isFirstRender && router.pathname !== "/") {
+        if (
+            isBeforeScroll &&
+            !isFirstRender &&
+            router.pathname !== "/" &&
+            nowAdventure?.history.page &&
+            nowAdventure?.history.header
+        ) {
             router.push(
-                nowAdventure?.history.page && nowAdventure?.history.header
-                    ? nowAdventure.history.page +
-                          "/#" +
-                          nowAdventure.history.header
-                    : "/"
+                nowAdventure.history.page + "/#" + nowAdventure.history.header
             );
         }
     }, [

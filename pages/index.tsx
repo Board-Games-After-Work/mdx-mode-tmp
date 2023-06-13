@@ -31,18 +31,16 @@ export default () => {
             <Stack direction="row" spacing={2}>
                 <Adventure
                     val={nowAdventure}
-                    onClick={() => {
-                        if (
-                            nowAdventure?.history.page &&
-                            nowAdventure?.history.header
-                        )
-                            router.push(
-                                nowAdventure.history.page +
-                                    "/#" +
-                                    nowAdventure.history.header
-                            );
-                    }}
+                    href={
+                        nowAdventure?.history.page &&
+                        nowAdventure?.history.header
+                            ? nowAdventure.history.page +
+                              "/#" +
+                              nowAdventure.history.header
+                            : "/"
+                    }
                 />
+
                 <Stack direction="column">
                     <Typography variant="h5" margin={2} component="div">
                         上次进度:

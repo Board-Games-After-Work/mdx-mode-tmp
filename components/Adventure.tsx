@@ -13,6 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 export default (props: {
     val: Adventure | null;
     onClick?: (val: Adventure | null) => void;
+    href?: string;
     selectable?: boolean;
 }) => {
     const [nowAdventure, setNowAdventure] = useAtom(nowAdventureA);
@@ -84,6 +85,7 @@ export default (props: {
                     onClick={() =>
                         props.onClick ? props.onClick(props.val ?? null) : {}
                     }
+                    href={props.href ?? ""}
                     sx={{ height: 270 }}
                 >
                     <CardContent>

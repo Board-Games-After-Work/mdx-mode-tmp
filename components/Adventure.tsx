@@ -44,6 +44,9 @@ export default (props: {
                 minWidth: 190,
                 maxWidth: 190,
                 height: 270,
+                "a": {
+                    all: "initial"
+                }
             }}
             elevation={
                 props.selectable &&

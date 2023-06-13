@@ -28,6 +28,7 @@ let scanCount = 0;
 let directoryCount = 0;
 export default (props: { children: ReactElement; title?: string }) => {
     const [isFirstRender, setIsFirstRender] = useState(true);
+    const [isBeforeScroll, setIsBeforeScroll] = useState(true);
 
     const [history, setHistory] = useState(undefined as string | undefined);
 
@@ -44,6 +45,18 @@ export default (props: { children: ReactElement; title?: string }) => {
     useEffect(() => {
         directoryCount++;
         const nowCount = directoryCount;
+
+        useEffect(() => {
+            if (isBeforeScroll) {
+                router.push(
+                    nowAdventure?.history.page && nowAdventure?.history.header
+                        ? nowAdventure.history.page +
+                              "/#" +
+                              nowAdventure.history.header
+                        : "/"
+                );
+            }
+        });
 
         requestIdleCallback(() => {
             if (directoryCount !== nowCount) return;
@@ -84,6 +97,8 @@ export default (props: { children: ReactElement; title?: string }) => {
 
             scanCount = 0;
         });
+
+        setIsBeforeScroll(false);
     }, [headersList]);
 
     useEffect(() => {

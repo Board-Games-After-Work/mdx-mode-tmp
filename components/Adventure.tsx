@@ -9,6 +9,7 @@ import {
 import { useAtom } from "jotai";
 import { adventuresA, nowAdventureA } from "@/store";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Link from "next/link";
 
 export default (props: {
     val: Adventure | null;
@@ -81,35 +82,38 @@ export default (props: {
                     />
                 </>
             ) : (
-                <CardActionArea
-                    onClick={() =>
-                        props.onClick ? props.onClick(props.val ?? null) : {}
-                    }
-                    href={props.href ?? ""}
-                    sx={{ height: 270 }}
-                >
-                    <CardContent>
-                        <Stack
-                            direction="row"
-                            spacing={2}
-                            alignItems="center"
-                            height={30}
-                        >
-                            <Chip
-                                label={labelName}
-                                variant="outlined"
-                                sx={{ width: "100%" }}
-                                size="medium"
-                            />
-                        </Stack>
-                    </CardContent>
+                <Link href={props.href ?? ""} prefetch>
+                    <CardActionArea
+                        onClick={() =>
+                            props.onClick
+                                ? props.onClick(props.val ?? null)
+                                : {}
+                        }
+                        sx={{ height: 270 }}
+                    >
+                        <CardContent>
+                            <Stack
+                                direction="row"
+                                spacing={2}
+                                alignItems="center"
+                                height={30}
+                            >
+                                <Chip
+                                    label={labelName}
+                                    variant="outlined"
+                                    sx={{ width: "100%" }}
+                                    size="medium"
+                                />
+                            </Stack>
+                        </CardContent>
 
-                    <CardMedia
-                        sx={{ height: "100%" }}
-                        image={image}
-                        title="冒险"
-                    />
-                </CardActionArea>
+                        <CardMedia
+                            sx={{ height: "100%" }}
+                            image={image}
+                            title="冒险"
+                        />
+                    </CardActionArea>
+                </Link>
             )}
         </Card>
     );

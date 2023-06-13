@@ -43,20 +43,28 @@ export default (props: { children: ReactElement; title?: string }) => {
     const router = useRouter();
 
     useEffect(() => {
+        if (isBeforeScroll && !isFirstRender && router.pathname !== "/") {
+            router.push(
+                nowAdventure?.history.page && nowAdventure?.history.header
+                    ? nowAdventure.history.page +
+                          "/#" +
+                          nowAdventure.history.header
+                    : "/"
+            );
+        }
+    }, [
+        isBeforeScroll,
+        isFirstRender,
+        nowAdventure?.history.header,
+        nowAdventure?.history.page,
+        router,
+    ]);
+
+    useEffect(() => {
+        if (isBeforeScroll) return;
+
         directoryCount++;
         const nowCount = directoryCount;
-
-        useEffect(() => {
-            if (isBeforeScroll) {
-                router.push(
-                    nowAdventure?.history.page && nowAdventure?.history.header
-                        ? nowAdventure.history.page +
-                              "/#" +
-                              nowAdventure.history.header
-                        : "/"
-                );
-            }
-        });
 
         requestIdleCallback(() => {
             if (directoryCount !== nowCount) return;
@@ -78,7 +86,14 @@ export default (props: { children: ReactElement; title?: string }) => {
             setTitlesList(titles);
             directoryCount = 0;
         });
-    }, [setTitlesList, history]);
+    }, [
+        setTitlesList,
+        history,
+        isBeforeScroll,
+        router,
+        nowAdventure?.history.page,
+        nowAdventure?.history.header,
+    ]);
 
     const onScanTitle = useCallback(() => {
         scanCount++;

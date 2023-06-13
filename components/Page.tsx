@@ -25,6 +25,7 @@ export const pageRoutes = [
 export const headersListA = atom([] as (() => string | null)[]);
 
 let scanCount = 0;
+let directoryCount = 0;
 export default (props: { children: ReactElement; title?: string }) => {
     const [isFirstRender, setIsFirstRender] = useState(true);
 
@@ -41,8 +42,15 @@ export default (props: { children: ReactElement; title?: string }) => {
     const router = useRouter();
 
     useEffect(() => {
-        const titles = Array.from(document.querySelectorAll(".MDX_Title")).map(
-            (v) => {
+        directoryCount++;
+        const nowCount = directoryCount;
+
+        requestIdleCallback(() => {
+            if (directoryCount !== nowCount) return;
+
+            const titles = Array.from(
+                document.querySelectorAll(".MDX_Title")
+            ).map((v) => {
                 const el = v.lastChild as HTMLHeadElement | null;
 
                 return [
@@ -50,12 +58,13 @@ export default (props: { children: ReactElement; title?: string }) => {
                     el?.offsetTop,
                     parseInt(el?.localName.replace("h", "") ?? "0"),
                 ] as [string, number, number];
-            }
-        );
+            });
 
-        titles.sort((a, b) => a[1] - b[1]);
+            titles.sort((a, b) => a[1] - b[1]);
 
-        setTitlesList(titles);
+            setTitlesList(titles);
+            directoryCount = 0;
+        });
     }, [setTitlesList, history]);
 
     const onScanTitle = useCallback(() => {

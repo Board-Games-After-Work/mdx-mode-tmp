@@ -12,8 +12,10 @@ const __nowAdventureA__ = atomWithStorage(
 export const nowAdventureA = atom(
     (get) => get(__nowAdventureA__),
     async (get, set, val?: Adventure) => {
-        if (val === undefined) {
+        if (val === undefined && get(__nowAdventureA__) === null) {
             set(__nowAdventureA__, await newAdventure());
+        } else if (val === undefined) {
+            set(__nowAdventureA__, get(__nowAdventureA__));
         } else {
             set(__nowAdventureA__, () => val);
         }

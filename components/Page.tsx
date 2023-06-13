@@ -56,7 +56,7 @@ export default (props: { children: ReactElement; title?: string }) => {
         titles.sort((a, b) => a[1] - b[1]);
 
         setTitlesList(titles);
-    }, [setTitlesList]);
+    }, [setTitlesList, history]);
 
     const onScanTitle = useCallback(() => {
         scanCount++;
@@ -133,7 +133,6 @@ export default (props: { children: ReactElement; title?: string }) => {
                     },
                 }}
             />
-
             <Box
                 display="flex"
                 flexDirection="column"
@@ -143,44 +142,59 @@ export default (props: { children: ReactElement; title?: string }) => {
             >
                 <Header pageRoutes={pageRoutes} />
 
-                <Stack
-                    direction="row"
-                    width="100%"
-                    maxHeight={innerHeight - 64}
-                    alignItems="center"
-                    justifyContent="center"
-                    overflow="hidden"
-                >
-                    <Card
-                        sx={{
-                            mx: 2,
-                            overflowY: "auto",
-                            overflowX: "hidden",
-                            width: "100%",
-                            height: innerHeight - 100 + "px",
-                            maxHeight: innerHeight - 100 + "px",
-                        }}
+                {router.pathname !== "/" ? (
+                    <Stack
+                        direction="row"
+                        width="100%"
+                        maxHeight={innerHeight - 64}
+                        alignItems="center"
+                        justifyContent="center"
+                        overflow="hidden"
                     >
-                        <Directory titles={titlesList} />
-                    </Card>
+                        <Card
+                            sx={{
+                                mx: 2,
+                                overflowY: "auto",
+                                overflowX: "hidden",
+                                width: "100%",
+                                height: innerHeight - 100 + "px",
+                                maxHeight: innerHeight - 100 + "px",
+                            }}
+                        >
+                            <Directory titles={titlesList} />
+                        </Card>
 
-                    <div
-                        style={{
-                            margin: "0 2",
-                            overflowY: "auto",
-                            overflowX: "hidden",
-                            width: 900,
-                            minWidth: 900,
-                            height: innerHeight - 100 + "px",
-                            maxHeight: innerHeight - 100 + "px",
-                        }}
-                        onScroll={onScanTitle}
+                        <div
+                            style={{
+                                margin: "0 2",
+                                overflowY: "auto",
+                                overflowX: "hidden",
+                                width: 900,
+                                minWidth: 900,
+                                height: innerHeight - 100 + "px",
+                                maxHeight: innerHeight - 100 + "px",
+                            }}
+                            onScroll={onScanTitle}
+                        >
+                            {props.children}
+                        </div>
+
+                        <Box width="100%" />
+                    </Stack>
+                ) : (
+                    <Box
+                        width="100%"
+                        height="100%"
+                        overflow="auto"
+                        display="flex"
+                        alignItems="center"
+                        flexDirection="column"
                     >
-                        {props.children}
-                    </div>
-
-                    <Box width="100%" />
-                </Stack>
+                        <Box width="1000px" margin="1">
+                            {props.children}
+                        </Box>
+                    </Box>
+                )}
             </Box>
         </ThemeProvider>
     );

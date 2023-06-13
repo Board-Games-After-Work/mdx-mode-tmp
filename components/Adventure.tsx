@@ -105,7 +105,7 @@ export default (props: {
                     <CardMedia
                         sx={{ height: "100%" }}
                         image={image}
-                        title="green iguana"
+                        title="冒险"
                     />
                 </CardActionArea>
             )}

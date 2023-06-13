@@ -4,7 +4,10 @@ import { newAdventure } from "./utils";
 
 export const adventuresA = atomWithStorage("adventures", [] as Adventure[]);
 
-const __nowAdventureA__ = atom(null as Adventure | null);
+const __nowAdventureA__ = atomWithStorage(
+    "__nowAdventure__",
+    null as Adventure | null
+);
 
 export const nowAdventureA = atom(
     (get) => get(__nowAdventureA__),

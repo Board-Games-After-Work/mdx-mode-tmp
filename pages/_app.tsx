@@ -4,6 +4,7 @@ import Alert from "@mui/material/Alert";
 import dynamic from "next/dynamic";
 import CustomerDOMElement from "@comps/CustomerDOMElement";
 import { Typography } from "@mui/material";
+import Head from "next/head";
 
 const Page = dynamic(() => import("@comps/Page"), { ssr: false });
 const DayCheckPoint = dynamic(() => import("@comps/DayCheckPoint"), {
@@ -48,12 +49,29 @@ export default function Post({
     pageProps: any;
 }) {
     return (
-        <Page>
-            <MDXProvider components={components}>
-                <Typography component="span">
-                    <Component {...pageProps} />
-                </Typography>
-            </MDXProvider>
-        </Page>
+        <>
+            <Head>
+                <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1.0"
+                />
+                <link
+                    rel="icon"
+                    type="image/png"
+                    sizes="32x32"
+                    href="/icon.svg"
+                ></link>
+                <title>A Song of the Northern Expedition</title>
+            </Head>
+
+            <Page>
+                <MDXProvider components={components}>
+                    <Typography component="span">
+                        <Component {...pageProps} />
+                    </Typography>
+                </MDXProvider>
+            </Page>
+        </>
     );
 }

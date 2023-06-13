@@ -1,23 +1,13 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import {
-    Box,
-    Button,
-    Card,
-    GlobalStyles,
-    IconButton,
-    Toolbar,
-    Typography,
-} from "@mui/material";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import HomeIcon from "@mui/icons-material/Home";
-import { ReactElement, useEffect, useState } from "react";
-import Link from "next/link";
-import { atom, useAtom, useAtomValue } from "jotai";
+import { Box, Card, GlobalStyles, Paper, Stack } from "@mui/material";
+import { ReactElement, useCallback, useEffect, useState } from "react";
+import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { nowAdventureA } from "@/store";
 import { useRouter } from "next/router";
+import Header from "./Header";
+import Directory from "./Directory";
 
 export const colorModeA = atomWithStorage(
     "darkMode",
@@ -34,6 +24,7 @@ export const pageRoutes = [
 
 export const headersListA = atom([] as (() => string | null)[]);
 
+let scanCount = 0;
 export default (props: { children: ReactElement; title?: string }) => {
     const [isFirstRender, setIsFirstRender] = useState(true);
 
@@ -41,30 +32,50 @@ export default (props: { children: ReactElement; title?: string }) => {
 
     const [nowAdventure, setNowAdventure] = useAtom(nowAdventureA);
 
+    const [titlesList, setTitlesList] = useState(
+        [] as [string, number, number][]
+    );
+
     const headersList = useAtomValue(headersListA);
 
     const router = useRouter();
 
     useEffect(() => {
-        if (isFirstRender) {
-            setInterval(() => {
-                for (const f of headersList) {
-                    const header = f();
+        const titles = Array.from(document.querySelectorAll(".MDX_Title")).map(
+            (v) => {
+                const el = v.lastChild as HTMLHeadElement | null;
 
-                    if (header) {
-                        setHistory(header);
-                        break;
-                    }
+                return [
+                    el?.id,
+                    el?.offsetTop,
+                    parseInt(el?.localName.replace("h", "") ?? "0"),
+                ] as [string, number, number];
+            }
+        );
+
+        titles.sort((a, b) => a[1] - b[1]);
+
+        setTitlesList(titles);
+    }, [setTitlesList]);
+
+    const onScanTitle = useCallback(() => {
+        scanCount++;
+        const nowCount = scanCount;
+        requestIdleCallback(() => {
+            if (nowCount !== scanCount) return;
+
+            for (const f of headersList) {
+                const header = f();
+
+                if (header) {
+                    setHistory(header);
+                    break;
                 }
-            }, 500);
-        }
-    }, [
-        headersList,
-        isFirstRender,
-        nowAdventure,
-        router.pathname,
-        setNowAdventure,
-    ]);
+            }
+
+            scanCount = 0;
+        });
+    }, [headersList]);
 
     useEffect(() => {
         let tmp = nowAdventure;
@@ -83,7 +94,7 @@ export default (props: { children: ReactElement; title?: string }) => {
         }
     }, [isFirstRender, setNowAdventure]);
 
-    const [colorMode, setColorMode] = useAtom(colorModeA);
+    const colorMode = useAtomValue(colorModeA);
 
     const theme = createTheme({
         palette: {
@@ -112,6 +123,14 @@ export default (props: { children: ReactElement; title?: string }) => {
                 styles={{
                     "*::selection": selection,
                     "*::-moz-selection": selection,
+
+                    "*::-webkit-scrollbar": {
+                        width: 6,
+                    },
+                    "*::-webkit-scrollbar-thumb": {
+                        background: theme.palette.primary.main,
+                        borderRadius: 1,
+                    },
                 }}
             />
 
@@ -122,70 +141,46 @@ export default (props: { children: ReactElement; title?: string }) => {
                 width="100%"
                 maxHeight="100vh"
             >
-                <Box width="100%">
-                    <Card>
-                        <Toolbar>
-                            <IconButton
-                                size="large"
-                                edge="start"
-                                color="inherit"
-                                aria-label="menu"
-                                sx={{ mr: 2 }}
-                                href="/"
-                            >
-                                <HomeIcon />
-                            </IconButton>
+                <Header pageRoutes={pageRoutes} />
 
-                            <IconButton
-                                size="large"
-                                edge="start"
-                                color="inherit"
-                                aria-label="menu"
-                                sx={{ mr: 2 }}
-                                onClick={() =>
-                                    setColorMode(
-                                        colorMode === "dark" ? "light" : "dark"
-                                    )
-                                }
-                            >
-                                {colorMode === "dark" ? (
-                                    <DarkModeIcon />
-                                ) : (
-                                    <LightModeIcon />
-                                )}
-                            </IconButton>
-
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                sx={{ flexGrow: 1 }}
-                            >
-                                正在进行:{" "}
-                                <strong>{nowAdventure?.name ?? ""}</strong>
-                            </Typography>
-
-                            {pageRoutes.map((i, index) => (
-                                <Link href={i.href} key={index}>
-                                    <Button sx={{ marginX: 1 }}>
-                                        {i.name}
-                                    </Button>
-                                </Link>
-                            ))}
-                        </Toolbar>
-                    </Card>
-                </Box>
-                <Box
+                <Stack
+                    direction="row"
                     width="100%"
-                    height="100%"
-                    overflow="auto"
-                    display="flex"
+                    maxHeight={innerHeight - 64}
                     alignItems="center"
-                    flexDirection="column"
+                    justifyContent="center"
+                    overflow="hidden"
                 >
-                    <Box width="1000px" margin="1">
+                    <Card
+                        sx={{
+                            mx: 2,
+                            overflowY: "auto",
+                            overflowX: "hidden",
+                            width: "100%",
+                            height: innerHeight - 100 + "px",
+                            maxHeight: innerHeight - 100 + "px",
+                        }}
+                    >
+                        <Directory titles={titlesList} />
+                    </Card>
+
+                    <div
+                        style={{
+                            margin: "0 2",
+                            overflowY: "auto",
+                            overflowX: "hidden",
+                            width: 900,
+                            minWidth: 900,
+                            height: innerHeight - 100 + "px",
+                            maxHeight: innerHeight - 100 + "px",
+                        }}
+                        onScroll={onScanTitle}
+                    >
                         {props.children}
-                    </Box>
-                </Box>
+                    </div>
+
+                    <Box width="100%" />
+                </Stack>
             </Box>
         </ThemeProvider>
     );

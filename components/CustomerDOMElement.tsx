@@ -12,7 +12,6 @@ import {
     ReactElement,
     useEffect,
     useRef,
-    useState,
 } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -54,7 +53,7 @@ const Warper = (props: { children: ReactElement; subId: string }) => {
     });
 
     return (
-        <Box display="flex" alignItems="center" ref={el}>
+        <Box display="flex" alignItems="center" ref={el} className="MDX_Title">
             <IconButton size="small" href={"#" + props.subId}>
                 <AttachFileIcon fontSize="inherit" />
             </IconButton>

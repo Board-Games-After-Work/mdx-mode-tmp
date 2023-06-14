@@ -7,12 +7,7 @@ import {
     Chip,
 } from "@mui/material";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-import {
-    MutableRefObject,
-    ReactElement,
-    useEffect,
-    useRef,
-} from "react";
+import { MutableRefObject, ReactElement, useEffect, useRef } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia, { CardMediaProps } from "@mui/material/CardMedia";
@@ -197,5 +192,5 @@ export default {
     a: A,
     img: IMG,
     code: CODE,
-    p: (props: any) => <div {...props}></div>,
+    p: (props: any) => <div {...props} style={{ paddingBottom: 10 }}></div>,
 };

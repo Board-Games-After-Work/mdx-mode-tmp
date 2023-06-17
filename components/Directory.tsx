@@ -61,7 +61,7 @@ export default (props: { titles: [string, number, number][] }) => {
                         key={index}
                         href={"#" + id}
                         onClick={() => onJump(id)}
-                        disabled={id === nowAdventure?.history.header}
+                        disabled={id === nowAdventure?.history?.header}
                     >
                         <ListItemText primary={id} sx={{ ml: level * 2 }} />
                     </ListItemButton>

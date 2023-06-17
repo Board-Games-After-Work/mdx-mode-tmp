@@ -32,11 +32,11 @@ export default () => {
                 <Adventure
                     val={nowAdventure}
                     href={
-                        nowAdventure?.history.page &&
-                        nowAdventure?.history.header
-                            ? nowAdventure.history.page +
+                        nowAdventure?.history?.page &&
+                        nowAdventure?.history?.header
+                            ? nowAdventure.history?.page +
                               "/#" +
-                              nowAdventure.history.header
+                              nowAdventure.history?.header
                             : "/"
                     }
                 />

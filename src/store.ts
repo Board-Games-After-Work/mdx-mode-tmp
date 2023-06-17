@@ -27,7 +27,7 @@ export const nowAdventureA = atom(
 
             if (val) tmp[nowRollingIndex] = val;
 
-            console.log(get(nowAdventureA)?.history.header);
+            console.log(get(nowAdventureA)?.history?.header);
 
             set(adventuresA, () => tmp);
         }

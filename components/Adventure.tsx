@@ -32,9 +32,9 @@ export default (props: {
         setNowAdventure(undefined);
     };
 
-    const image = nowAdventure?.history.image ?? "None";
+    const image = nowAdventure?.history?.image ?? "None";
     const labelName =
-        props.val?.name + (props.val?.history.page ?? "") ?? "无冒险";
+        props.val?.name + (props.val?.history?.page ?? "") ?? "无冒险";
 
     return (
         <Card

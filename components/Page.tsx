@@ -47,18 +47,18 @@ export default (props: { children: ReactElement; title?: string }) => {
             isBeforeScroll &&
             !isFirstRender &&
             router.pathname !== "/" &&
-            nowAdventure?.history.page &&
-            nowAdventure?.history.header
+            nowAdventure?.history?.page &&
+            nowAdventure?.history?.header
         ) {
             router.push(
-                nowAdventure.history.page + "/#" + nowAdventure.history.header
+                nowAdventure.history?.page + "/#" + nowAdventure.history?.header
             );
         }
     }, [
         isBeforeScroll,
         isFirstRender,
-        nowAdventure?.history.header,
-        nowAdventure?.history.page,
+        nowAdventure?.history?.header,
+        nowAdventure?.history?.page,
         router,
     ]);
 
@@ -93,8 +93,8 @@ export default (props: { children: ReactElement; title?: string }) => {
         history,
         isBeforeScroll,
         router,
-        nowAdventure?.history.page,
-        nowAdventure?.history.header,
+        nowAdventure?.history?.page,
+        nowAdventure?.history?.header,
     ]);
 
     const onScanTitle = useCallback(() => {

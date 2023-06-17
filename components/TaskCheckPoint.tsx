@@ -31,7 +31,7 @@ export default (props: {
 
     const thisCheckPoint = useMemo(
         () =>
-            nowAdventure?.tasks[props.task].checkPoints.find(
+            nowAdventure?.tasks[props.task]?.checkPoints.find(
                 (c) => c.name === props.label
             ) ?? null,
         [nowAdventure?.tasks, props.label, props.task]

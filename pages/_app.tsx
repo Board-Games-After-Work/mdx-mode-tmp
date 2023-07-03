@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import { MDXProvider } from "@mdx-js/react";
 import { NextComponentType } from "next";
 import Alert from "@mui/material/Alert";
@@ -72,6 +73,8 @@ export default function Post({
                     </Typography>
                 </MDXProvider>
             </Page>
+
+            <Analytics />
         </>
     );
 }

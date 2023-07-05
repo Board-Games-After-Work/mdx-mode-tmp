@@ -101,6 +101,8 @@ export default (props: { children: ReactElement; title?: string }) => {
                         justifyContent="center"
                         overflow="hidden"
                     >
+                        <Box width="100%" />
+
                         <Card
                             sx={{
                                 mx: 2,

@@ -6,7 +6,6 @@ import ListItemText from "@mui/material/ListItemText";
 import { nowAdventureA } from "@/store";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { Autocomplete, ListItem, TextField } from "@mui/material";
-import { useRouter } from "next/router";
 
 export const titlesListA = atom([] as [string, number, number][]);
 export const historyTitleA = atom(undefined as string | undefined);

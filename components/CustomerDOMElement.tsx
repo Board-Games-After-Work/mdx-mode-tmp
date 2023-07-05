@@ -7,13 +7,21 @@ import {
     Chip,
 } from "@mui/material";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-import { MutableRefObject, ReactElement, useEffect, useRef } from "react";
+import {
+    MutableRefObject,
+    ReactElement,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia, { CardMediaProps } from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { useAtom } from "jotai";
-import { headersListA } from "@comps/Page";
+import { useAtom, useSetAtom } from "jotai";
+import { nowAdventureA } from "@/store";
+import { historyTitleA, titlesListA } from "./Directory";
+import _ from "lodash";
 
 const getId = (children: string | string[] | any) => {
     switch (typeof children) {
@@ -27,28 +35,45 @@ const getId = (children: string | string[] | any) => {
 };
 
 const Warper = (props: { children: ReactElement; subId: string }) => {
-    const [headersList, setHeadersList] = useAtom(headersListA);
-
     const el = useRef() as MutableRefObject<HTMLDivElement>;
+    const [isFirstRender, setIsFirstRender] = useState(true);
+    const [nowAdventure, setNowAdventure] = useAtom(nowAdventureA);
+    const setHistoryTitle = useSetAtom(historyTitleA);
+    const setTitleList = useSetAtom(titlesListA);
 
     useEffect(() => {
-        let tmp = headersList;
+        if (isFirstRender) {
+            let thisTitle = [
+                props.subId,
+                el.current.scrollTop,
+                parseInt(
+                    el.current.children[1].localName.replace("h", "") ?? "0"
+                ),
+            ] as [string, number, number];
 
-        tmp.push(() => {
-            if (!el?.current?.getBoundingClientRect) return null;
+            setTitleList((titleList) =>
+                _.uniqWith([...titleList, thisTitle], (a, b) => a[0] === b[0])
+            );
+        }
 
-            const offset = el.current.getBoundingClientRect();
+        const intersectionObserver = new IntersectionObserver((entries) => {
+            if (entries[0].intersectionRatio <= 0) return;
 
-            if (offset.top <= innerHeight && offset.bottom >= 0)
-                return props.subId;
-            else return null;
+            let tmp = nowAdventure;
+
+            if (tmp) tmp.history.header = props.subId;
+
+            setNowAdventure(tmp ?? undefined);
+            setHistoryTitle(props.subId);
         });
 
-        setHeadersList(tmp);
+        if (el.current) intersectionObserver.observe(el.current);
     });
 
+    useEffect(() => setIsFirstRender(false), []);
+
     return (
-        <Box display="flex" alignItems="center" ref={el} className="MDX_Title">
+        <Box display="flex" alignItems="center" ref={el}>
             <IconButton size="small" href={"#" + props.subId}>
                 <AttachFileIcon fontSize="inherit" />
             </IconButton>

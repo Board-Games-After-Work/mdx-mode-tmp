@@ -18,7 +18,6 @@ export default () => {
     const [flitter, setFlitter] = React.useState("");
 
     const titles = useAtomValue(titlesListA);
-    const router = useRouter();
 
     const onJump = React.useCallback(
         (id: string) => {
@@ -27,13 +26,10 @@ export default () => {
             if (tmp?.history) {
                 tmp.history.header = id;
 
-                if (router.pathname !== "/") tmp.history.page = router.pathname;
-                console.log(router.pathname);
-
                 setNowAdventure(tmp);
             }
         },
-        [nowAdventure, router.pathname, setNowAdventure]
+        [nowAdventure, setNowAdventure]
     );
 
     return (

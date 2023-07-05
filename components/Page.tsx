@@ -109,6 +109,7 @@ export default (props: { children: ReactElement; title?: string }) => {
                                 width: "100%",
                                 height: innerHeight - 100 + "px",
                                 maxHeight: innerHeight - 100 + "px",
+                                borderRadius: 0,
                             }}
                         >
                             <Directory />

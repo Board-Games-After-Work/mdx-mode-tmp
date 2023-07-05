@@ -38,7 +38,7 @@ export default () => {
 
     return (
         <List
-            sx={{ width: "100%", height: "auto", bgcolor: "background.paper" }}
+            sx={{ width: "100%", height: "100%", bgcolor: "background.paper" }}
             component="nav"
             aria-labelledby="nested-list-subheader"
             subheader={

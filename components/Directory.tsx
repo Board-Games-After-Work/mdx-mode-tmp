@@ -4,12 +4,21 @@ import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { nowAdventureA } from "@/store";
-import { useAtom } from "jotai";
+import { atom, useAtom, useAtomValue } from "jotai";
 import { Autocomplete, ListItem, TextField } from "@mui/material";
+import { useRouter } from "next/router";
 
-export default (props: { titles: [string, number, number][] }) => {
+export const titlesListA = atom([] as [string, number, number][]);
+export const historyTitleA = atom(undefined as string | undefined);
+
+export default () => {
     const [nowAdventure, setNowAdventure] = useAtom(nowAdventureA);
+    const historyTitle = useAtomValue(historyTitleA);
+
     const [flitter, setFlitter] = React.useState("");
+
+    const titles = useAtomValue(titlesListA);
+    const router = useRouter();
 
     const onJump = React.useCallback(
         (id: string) => {
@@ -18,10 +27,13 @@ export default (props: { titles: [string, number, number][] }) => {
             if (tmp?.history) {
                 tmp.history.header = id;
 
+                if (router.pathname !== "/") tmp.history.page = router.pathname;
+                console.log(router.pathname);
+
                 setNowAdventure(tmp);
             }
         },
-        [nowAdventure, setNowAdventure]
+        [nowAdventure, router.pathname, setNowAdventure]
     );
 
     return (
@@ -38,7 +50,7 @@ export default (props: { titles: [string, number, number][] }) => {
             <ListItem>
                 <Autocomplete
                     disablePortal
-                    options={props.titles.map(([id, _height, level]) => ({
+                    options={titles.map(([id, _height, level]) => ({
                         label: id,
                         level,
                     }))}
@@ -54,14 +66,14 @@ export default (props: { titles: [string, number, number][] }) => {
                 />
             </ListItem>
 
-            {props.titles
+            {titles
                 .filter(([id, _height, level]) => id.indexOf(flitter) !== -1)
                 .map(([id, _height, level], index) => (
                     <ListItemButton
                         key={index}
                         href={"#" + id}
                         onClick={() => onJump(id)}
-                        disabled={id === nowAdventure?.history?.header}
+                        disabled={id === historyTitle}
                     >
                         <ListItemText primary={id} sx={{ ml: level * 2 }} />
                     </ListItemButton>

@@ -1,8 +1,8 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Box, Card, GlobalStyles, Stack } from "@mui/material";
-import { ReactElement, useEffect, useState } from "react";
-import { atom, useAtom, useAtomValue } from "jotai";
+import { Box, Card, GlobalStyles, Paper, Stack } from "@mui/material";
+import { ReactElement, useCallback, useEffect, useState } from "react";
+import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { nowAdventureA } from "@/store";
 import { useRouter } from "next/router";
@@ -22,21 +22,112 @@ export const pageRoutes = [
     { name: "Vol.3: 默索里哀的崛起", href: "/" },
 ];
 
+export const headersListA = atom([] as (() => string | null)[]);
+
+let scanCount = 0;
+let directoryCount = 0;
 export default (props: { children: ReactElement; title?: string }) => {
     const [isFirstRender, setIsFirstRender] = useState(true);
+    const [isBeforeScroll, setIsBeforeScroll] = useState(true);
+
+    const [history, setHistory] = useState(undefined as string | undefined);
 
     const [nowAdventure, setNowAdventure] = useAtom(nowAdventureA);
 
+    const [titlesList, setTitlesList] = useState(
+        [] as [string, number, number][]
+    );
+
+    const headersList = useAtomValue(headersListA);
+
     const router = useRouter();
+
+    useEffect(() => {
+        if (
+            isBeforeScroll &&
+            !isFirstRender &&
+            router.pathname !== "/" &&
+            nowAdventure?.history?.page &&
+            nowAdventure?.history?.header
+        ) {
+            router.push(
+                nowAdventure.history?.page + "/#" + nowAdventure.history?.header
+            );
+        }
+    }, [
+        isBeforeScroll,
+        isFirstRender,
+        nowAdventure?.history?.header,
+        nowAdventure?.history?.page,
+        router,
+    ]);
+
+    useEffect(() => {
+        if (isBeforeScroll) return;
+
+        directoryCount++;
+        const nowCount = directoryCount;
+
+        requestIdleCallback(() => {
+            if (directoryCount !== nowCount) return;
+
+            const titles = Array.from(
+                document.querySelectorAll(".MDX_Title")
+            ).map((v) => {
+                const el = v.lastChild as HTMLHeadElement | null;
+
+                return [
+                    el?.id,
+                    el?.offsetTop,
+                    parseInt(el?.localName.replace("h", "") ?? "0"),
+                ] as [string, number, number];
+            });
+
+            titles.sort((a, b) => a[1] - b[1]);
+
+            setTitlesList(titles);
+            directoryCount = 0;
+        });
+    }, [
+        setTitlesList,
+        history,
+        isBeforeScroll,
+        router,
+        nowAdventure?.history?.page,
+        nowAdventure?.history?.header,
+    ]);
+
+    const onScanTitle = useCallback(() => {
+        scanCount++;
+        const nowCount = scanCount;
+        requestIdleCallback(() => {
+            if (nowCount !== scanCount) return;
+
+            for (const f of headersList) {
+                const header = f();
+
+                if (header) {
+                    setHistory(header);
+                    break;
+                }
+            }
+
+            scanCount = 0;
+        });
+
+        setIsBeforeScroll(false);
+    }, [headersList]);
 
     useEffect(() => {
         let tmp = nowAdventure;
 
         if (tmp?.history && router.pathname !== "/") {
+            tmp.history.header = history;
             tmp.history.page = router.pathname;
+
             setNowAdventure(tmp);
         }
-    }, [nowAdventure, router.pathname, setNowAdventure]);
+    }, [history, nowAdventure, router.pathname, setNowAdventure]);
 
     useEffect(() => {
         if (isFirstRender) {
@@ -111,7 +202,7 @@ export default (props: { children: ReactElement; title?: string }) => {
                                 maxHeight: innerHeight - 100 + "px",
                             }}
                         >
-                            <Directory />
+                            <Directory titles={titlesList} />
                         </Card>
 
                         <div
@@ -124,6 +215,7 @@ export default (props: { children: ReactElement; title?: string }) => {
                                 height: innerHeight - 100 + "px",
                                 maxHeight: innerHeight - 100 + "px",
                             }}
+                            onScroll={onScanTitle}
                         >
                             {props.children}
                         </div>

@@ -54,20 +54,20 @@ const Warper = (props: { children: ReactElement; subId: string }) => {
             setTitleList((titleList) =>
                 _.uniqWith([...titleList, thisTitle], (a, b) => a[0] === b[0])
             );
+
+            const intersectionObserver = new IntersectionObserver((entries) => {
+                if (entries[0].intersectionRatio <= 0) return;
+
+                let tmp = nowAdventure;
+
+                if (tmp) tmp.history.header = props.subId;
+
+                setNowAdventure(tmp ?? undefined);
+                setHistoryTitle(props.subId);
+            });
+
+            if (el.current) intersectionObserver.observe(el.current);
         }
-
-        const intersectionObserver = new IntersectionObserver((entries) => {
-            if (entries[0].intersectionRatio <= 0) return;
-
-            let tmp = nowAdventure;
-
-            if (tmp) tmp.history.header = props.subId;
-
-            setNowAdventure(tmp ?? undefined);
-            setHistoryTitle(props.subId);
-        });
-
-        if (el.current) intersectionObserver.observe(el.current);
     });
 
     useEffect(() => setIsFirstRender(false), []);

@@ -31,7 +31,7 @@ export default () => {
         {} as { [key: string]: boolean }
     );
 
-    const [flitter, setFlitter] = React.useState("");
+    const [flitter, setFlitter] = React.useState<string | null>(null);
 
     const titles = useAtomValue(titlesListA);
 
@@ -51,7 +51,7 @@ export default () => {
     const mapTreeToElement = React.useCallback(
         (node: Tree.TreeNode<string> | undefined): React.JSX.Element => {
             if (node?.children?.length === 0 || !node)
-                return node?.value?.indexOf(flitter) !== -1 ? (
+                return !flitter || node?.value?.indexOf(flitter) !== -1 ? (
                     <ListItemButton
                         href={"#" + node?.value}
                         onClick={() => onJump(node?.value ?? "")}
@@ -120,18 +120,11 @@ export default () => {
             <ListItem>
                 <Autocomplete
                     disablePortal
-                    options={titles.map(([id, _height, level]) => ({
-                        label: id,
-                        level,
-                    }))}
+                    options={titles.map(([id, _height, level]) => id)}
                     sx={{ width: 300 }}
+                    onChange={(_, v) => setFlitter(v)}
                     renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="查找"
-                            size="small"
-                            onChange={(evt) => setFlitter(evt.target.value)}
-                        />
+                        <TextField {...params} label="查找" size="small" />
                     )}
                 />
             </ListItem>

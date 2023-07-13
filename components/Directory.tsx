@@ -71,7 +71,7 @@ export default () => {
 
             return (
                 <>
-                    <ListItem sx={{ ml: node.lv * 2, mr: 2 }}>
+                    <ListItem sx={{ ml: node.lv * 1, mr: 2 }}>
                         <IconButton
                             onClick={() => {
                                 console.log(openMap);

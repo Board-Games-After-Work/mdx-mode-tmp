@@ -122,7 +122,12 @@ export default () => {
                     disablePortal
                     options={titles.map(([id, _height, level]) => id)}
                     sx={{ width: 300 }}
-                    onChange={(_, v) => setFlitter(v)}
+                    onChange={(_, v) => {
+                        setOpenMap(
+                            Object.fromEntries(titles.map(([v]) => [v, true]))
+                        );
+                        setFlitter(v);
+                    }}
                     renderInput={(params) => (
                         <TextField {...params} label="查找" size="small" />
                     )}

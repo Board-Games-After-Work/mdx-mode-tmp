@@ -74,11 +74,11 @@ export default () => {
                     <ListItem sx={{ ml: node.lv * 1, mr: 2 }}>
                         <IconButton
                             onClick={() => {
-                                console.log(openMap);
                                 setOpenMap((openMap) => {
                                     openMap[value] = !openMap[value];
                                     return openMap;
                                 });
+
                                 setCount(count + 1);
                             }}
                             aria-label="expend"
@@ -97,7 +97,11 @@ export default () => {
                         </Button>
                     </ListItem>
 
-                    <Collapse in={openMap[value]} timeout="auto" unmountOnExit>
+                    <Collapse
+                        in={openMap[value] ?? true}
+                        timeout="auto"
+                        unmountOnExit
+                    >
                         {children}
                     </Collapse>
                 </>

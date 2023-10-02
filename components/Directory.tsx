@@ -75,7 +75,7 @@ export default () => {
                         <IconButton
                             onClick={() => {
                                 setOpenMap((openMap) => {
-                                    openMap[value] = !openMap[value];
+                                    openMap[value] = !(openMap[value] ?? true);
                                     return openMap;
                                 });
 
@@ -84,7 +84,11 @@ export default () => {
                             aria-label="expend"
                             size="small"
                         >
-                            {openMap[value] ? <ExpandMore /> : <ExpandLess />}
+                            {openMap[value] ?? true ? (
+                                <ExpandMore />
+                            ) : (
+                                <ExpandLess />
+                            )}
                         </IconButton>
 
                         <Button

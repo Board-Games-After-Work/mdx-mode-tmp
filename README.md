@@ -2,7 +2,7 @@
 
 基于 `Next.js` + `MUI` + `MDX`
 
-(机核: 跑团GM工具箱丨终极模组写作发布方案之MDX)[https://www.gcores.com/articles/171711]
+[机核: 跑团GM工具箱丨终极模组写作发布方案之MDX](https://www.gcores.com/articles/171711)
 
 ## Getting Started
 

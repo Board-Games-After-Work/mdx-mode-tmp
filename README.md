@@ -1,6 +1,8 @@
-# A Song Of the Northern Expedition
+# 跑团模组模板
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+基于 `Next.js` + `MUI` + `MDX`
+
+(机核: 跑团GM工具箱丨终极模组写作发布方案之MDX)[https://www.gcores.com/articles/171711]
 
 ## Getting Started
 

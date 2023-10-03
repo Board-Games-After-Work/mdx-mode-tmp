@@ -63,7 +63,12 @@ export default (props: { val: Item | null | undefined }) => {
                 <></>
             )}
 
-            <Typography marginTop={2} whiteSpace="pre" component="div">
+            <Typography
+                marginTop={2}
+                whiteSpace="pre"
+                component="div"
+                overflow="auto"
+            >
                 <code>{props.val?.introduce ?? ""}</code>
             </Typography>
         </>

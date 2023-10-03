@@ -11,9 +11,9 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CreateAdventure from "@comps/CreateAdventure";
 import { useState } from "react";
 import { adventuresA, nowAdventureA } from "@/store";
-import { useAtom } from "jotai";
-import { useRouter } from "next/router";
-import { pageRoutes } from "@comps/Page";
+import { useAtom, useAtomValue } from "jotai";
+
+import { isTightModeA, pageRoutes } from "@comps/Page";
 
 export default () => {
     const [isCreating, setIsCreating] = useState(false);
@@ -21,14 +21,21 @@ export default () => {
     const [nowAdventure, setNowAdventure] = useAtom(nowAdventureA);
     const [adventures, setAdventures] = useAtom(adventuresA);
 
-    const router = useRouter();
+    const isTightMode = useAtomValue(isTightModeA);
 
     return (
         <>
-            <Typography variant="h3" margin={2} component="div">
+            <Typography
+                variant={isTightMode ? "h5" : "h3"}
+                margin={2}
+                component="div"
+            >
                 继续
             </Typography>
-            <Stack direction="row" spacing={2}>
+            <Stack
+                direction={isTightMode ? "column-reverse" : "row"}
+                spacing={2}
+            >
                 <Adventure
                     val={nowAdventure}
                     href={
@@ -42,10 +49,19 @@ export default () => {
                 />
 
                 <Stack direction="column">
-                    <Typography variant="h5" margin={2} component="div">
+                    <Typography
+                        variant={isTightMode ? "h6" : "h5"}
+                        margin={2}
+                        component="div"
+                    >
                         上次进度:
                     </Typography>
-                    <Typography variant="h2" margin={2} component="div" my={-2}>
+                    <Typography
+                        variant={isTightMode ? "h4" : "h2"}
+                        margin={2}
+                        component="div"
+                        my={-2}
+                    >
                         {nowAdventure?.history?.page !== "/"
                             ? pageRoutes.find(
                                   (val) =>
@@ -53,13 +69,21 @@ export default () => {
                               )?.name
                             : "新冒险"}
                     </Typography>
-                    <Typography variant="h3" margin={2} component="div">
+                    <Typography
+                        variant={isTightMode ? "h5" : "h3"}
+                        margin={2}
+                        component="div"
+                    >
                         {nowAdventure?.history?.header ?? ""}
                     </Typography>
                 </Stack>
             </Stack>
 
-            <Typography variant="h3" margin={2} component="div">
+            <Typography
+                variant={isTightMode ? "h5" : "h3"}
+                margin={2}
+                component="div"
+            >
                 冒险
             </Typography>
 
@@ -108,7 +132,11 @@ export default () => {
                 }}
             />
 
-            <Typography variant="h3" margin={2} component="div">
+            <Typography
+                variant={isTightMode ? "h5" : "h3"}
+                margin={2}
+                component="div"
+            >
                 设定
             </Typography>
         </>

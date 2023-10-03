@@ -91,9 +91,16 @@ export default (props: { pageRoutes: { name: string; href: string }[] }) => {
                     <Typography
                         variant="h6"
                         component="div"
-                        sx={{ flexGrow: 1 }}
+                        overflow="hidden"
+                        textOverflow="ellipsis"
+                        sx={{
+                            flexGrow: 1,
+                            width: isTightMode ? "160px" : void 0,
+                            display: "block",
+                        }}
                     >
-                        正在进行: <strong>{nowAdventure?.name ?? ""}</strong>
+                        {isTightMode ? "" : "正在进行:"}
+                        <strong>{nowAdventure?.name ?? ""}</strong>
                     </Typography>
 
                     {isTightMode ? (

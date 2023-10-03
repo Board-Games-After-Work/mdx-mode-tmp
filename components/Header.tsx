@@ -99,7 +99,7 @@ export default (props: { pageRoutes: { name: string; href: string }[] }) => {
                             display: "block",
                         }}
                     >
-                        {isTightMode ? "正在进行:" : ""}
+                        {isTightMode ? "" : "正在进行:"}
                         <strong>{nowAdventure?.name ?? ""}</strong>
                     </Typography>
 

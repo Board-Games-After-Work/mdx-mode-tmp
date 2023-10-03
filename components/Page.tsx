@@ -59,7 +59,7 @@ export default (props: { children: ReactElement; title?: string }) => {
             setIsTightMode(innerWidth < 1500);
             window.onresize = () => setIsTightMode(innerWidth < 1500);
         }
-    }, [isFirstRender, setNowAdventure]);
+    }, [isFirstRender, setIsTightMode, setNowAdventure]);
 
     const colorMode = useAtomValue(colorModeA);
 
@@ -181,7 +181,7 @@ export default (props: { children: ReactElement; title?: string }) => {
                         alignItems="center"
                         flexDirection="column"
                     >
-                        <Box width="1000px" margin="1">
+                        <Box width={isTightMode ? "100%" : "1000px"} margin="1">
                             {props.children}
                         </Box>
                     </Box>
